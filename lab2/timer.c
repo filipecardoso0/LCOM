@@ -21,7 +21,7 @@ int (timer_subscribe_int)(uint8_t *bit_no) {
 
 int (timer_unsubscribe_int)() {
   /* To be implemented by the students */
-  printf("%s is not yet implemented!\n", __func__);
+    printf("%s is not yet implemented!\n", __func__);
 
   return 1;
 }
@@ -32,16 +32,33 @@ void (timer_int_handler)() {
 }
 
 int (timer_get_conf)(uint8_t timer, uint8_t *st) {
-  /* To be implemented by the students */
-  printf("%s is not yet implemented!\n", __func__);
+  uint8_t control_word, timer_aux;
+  
+  control_word = TIMER_RB_CMD | TIMER_RB_SEL(timer);  
 
-  return 1;
+  if (sys_outb(TIMER_CTRL, control_word)) return 1; 
+
+  switch (timer) {
+    case 0: timer_aux = TIMER_0;
+    case 1: timer_aux = TIMER_1;
+    case 2: timer_aux = TIMER_2;
+  }
+
+  if (util_sys_inb(timer_aux, st)) return 1;
+
+  return 0;
 }
 
 int (timer_display_conf)(uint8_t timer, uint8_t st,
                         enum timer_status_field field) {
-  /* To be implemented by the students */
-  printf("%s is not yet implemented!\n", __func__);
+
+  /*
+  union timer_status_field_val timer_conf; 
+
+  timer_conf = timer_get_conf(timer, st);
+
+  timer_print_config(timer, field, timer_conf);  
+    */ 
 
   return 1;
 }
