@@ -6,9 +6,7 @@
 #include "i8254.h"
 
 int (timer_set_frequency)(uint8_t timer, uint32_t freq) {
-  /* To be implemented by the students */
-  printf("%s is not yet implemented!\n", __func__);
-
+  
   return 1;
 }
 
@@ -34,14 +32,17 @@ void (timer_int_handler)() {
 int (timer_get_conf)(uint8_t timer, uint8_t *st) {
   uint8_t control_word, timer_aux;
   
-  control_word = TIMER_RB_CMD | TIMER_RB_SEL(timer) | TIMER_RB_STATUS_;  
+  control_word = TIMER_RB_CMD | TIMER_RB_COUNT_ | TIMER_RB_SEL(timer);
 
   if (sys_outb(TIMER_CTRL, control_word)) return 1; 
 
   switch (timer) {
     case 0: timer_aux = TIMER_0;
+      break;
     case 1: timer_aux = TIMER_1;
+      break;
     case 2: timer_aux = TIMER_2;
+      break;
   }
 
   if (util_sys_inb(timer_aux, st)) return 1;
