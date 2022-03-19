@@ -54,8 +54,8 @@
 
 /* Get bytes */
 
-#define _LSB 0x00FF    /**least significant byte
-#define _MSB 0xFF00     /**most significant byte
+#define _LSB 0x00FF    // least significant byte
+#define _MSB 0xFF00    // most significant byte
 
 /**@}*/
 
