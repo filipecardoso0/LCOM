@@ -40,8 +40,15 @@ int(timer_test_read_config)(uint8_t timer, enum timer_status_field field) {
 }
 
 int(timer_test_time_base)(uint8_t timer, uint32_t freq) {
-  /* To be implemented by the students */
-  printf("%s is not yet implemented!\n", __func__);
+
+  uint16_t test = 0xaced;
+  uint8_t lsb;
+  uint8_t msb;
+
+  util_get_LSB(test, &lsb);
+  util_get_MSB(test, &msb);
+
+  printf("lsb: %x msb: %x\n", lsb, msb);
 
   return 1;
 }
