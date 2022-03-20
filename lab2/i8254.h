@@ -52,6 +52,11 @@
 #define TIMER_RB_STATUS_ BIT(4)
 #define TIMER_RB_SEL(n)  BIT((n) + 1)
 
+/* Get bytes */
+
+#define _LSB 0x00FF    // least significant byte
+#define _MSB 0xFF00    // most significant byte
+
 /**@}*/
 
 #endif /* _LCOM_I8254_H */
