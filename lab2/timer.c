@@ -36,11 +36,6 @@ int (timer_set_frequency)(uint8_t timer, uint32_t freq) {
     default: return 1;
   }
 
-  printf("ctrlwrd: 0x%x\n", ctrl_wrd);
-  //0111 0110
-  printf("freqlsb: 0x%x freqmsb: 0x%x\n", freq_lsb, freq_msb);
-  //traget = 30 >> 0x965C (38492)
-
   if (sys_outb(TIMER_CTRL, ctrl_wrd)) return 1;
 
   if (sys_outb(target, (uint32_t) freq_lsb)) return 1;
