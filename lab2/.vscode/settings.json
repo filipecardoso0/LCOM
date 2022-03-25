@@ -8,6 +8,8 @@
   "editor.wordWrapColumn": 100,
   "files.associations": {
     "syslib.h": "c",
-    "i8254.h": "c"
+    "i8254.h": "c",
+    "lcf.h": "c",
+    "type.h": "c"
   },
 }

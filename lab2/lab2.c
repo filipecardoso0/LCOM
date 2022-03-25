@@ -3,6 +3,9 @@
 
 #include <stdbool.h>
 #include <stdint.h>
+#include <lcom/lcf.h>
+
+extern int counter; 
 
 
 int main(int argc, char *argv[]) {
@@ -31,11 +34,9 @@ int main(int argc, char *argv[]) {
 
 int(timer_test_read_config)(uint8_t timer, enum timer_status_field field) {
 
-  uint8_t* st = (uint8_t*) malloc(sizeof(uint8_t));
-  if (timer_get_conf(timer, st)) return 1;
-  if (timer_display_conf(timer, *st, field)) return 1;
-  free(st);
-
+  uint8_t st;
+  if (timer_get_conf(timer, &st)) return 1;
+  if (timer_display_conf(timer, st, field)) return 1;
   return 0;
 }
 
@@ -47,8 +48,35 @@ int(timer_test_time_base)(uint8_t timer, uint32_t freq) {
 }
 
 int(timer_test_int)(uint8_t time) {
-  /* To be implemented by the students */
-  printf("%s is not yet implemented!\n", __func__);
+ 
+  int ipc_status, r;
 
-  return 1;
+  uint8_t irq_set; 
+
+  message msg;
+
+  if (timer_subscribe_int(&irq_set)) return 1;
+
+  while ( counter < time * (int)sys_hz()) {
+    if ( (r = driver_receive(ANY, &msg, &ipc_status)) != 0 ) { 
+      printf("driver_receive failed with: %d", r);
+      continue;
+    }
+    if (is_ipc_notify(ipc_status)) {
+      switch (_ENDPOINT_P(msg.m_source)) {
+        case HARDWARE:			
+          if (msg.m_notify.interrupts & BIT(irq_set)) { /* BIT() ATIVA A BITMASK CORRESPONDENTE AO irq_set */ 
+            timer_int_handler();
+
+            if(counter % (int) sys_hz() == 0)
+              timer_print_elapsed_time();
+          }
+          break;
+      }
+    }
+  }
+
+  if(timer_unsubscribe_int()) return 1;
+
+  return 0;
 }
