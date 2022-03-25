@@ -10,12 +10,11 @@ int hook_id = 0;
 
 int (timer_set_frequency)(uint8_t timer, uint32_t freq) {
 
-  uint8_t*  st = (uint8_t*) malloc(sizeof(uint8_t));
-  uint8_t target, ctrl_wrd, freq_lsb, freq_msb;
-  uint16_t new_freq;
-  uint32_t check_freq; 
+  if (freq > TIMER_FREQ || freq == 0) return 1;
 
-  if (freq > TIMER_FREQ) return 1;
+  uint8_t freq_lsb, freq_msb;
+  uint16_t new_freq = 0;
+  uint32_t check_freq; 
   
   check_freq = TIMER_FREQ / freq;
     
@@ -24,11 +23,20 @@ int (timer_set_frequency)(uint8_t timer, uint32_t freq) {
 
   if (util_get_LSB(new_freq, &freq_lsb)) return 1;
   if (util_get_MSB(new_freq, &freq_msb)) return 1;
-  
-  if (timer_get_conf(timer, st)) return 1;
+
+  uint8_t* st = (uint8_t*) malloc(sizeof(uint8_t));
+
+  if (timer_get_conf(timer, st)) {
+    free(st);
+    return 1;
+  }
+
+  uint8_t target, ctrl_wrd; 
 
   ctrl_wrd = *st & 0x0F;
   ctrl_wrd |= TIMER_LSB_MSB;
+
+  free(st);
 
   switch(timer){
     case 0: target = TIMER_0; break;
@@ -43,8 +51,6 @@ int (timer_set_frequency)(uint8_t timer, uint32_t freq) {
 
   if (sys_outb(target, (uint32_t) freq_lsb)) return 1;
   if (sys_outb(target, (uint32_t) freq_msb)) return 1;
-
-  free(st);
 
   return 0;
 }
