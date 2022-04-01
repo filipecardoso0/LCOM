@@ -49,6 +49,7 @@ int(timer_test_time_base)(uint8_t timer, uint32_t freq) {
 
 int(timer_test_int)(uint8_t time) {
  
+<<<<<<< HEAD
   int ipc_status = 0, r = 0, irq_set = 0x01;
   message msg;
   uint8_t bit_no;
@@ -57,23 +58,48 @@ int(timer_test_int)(uint8_t time) {
 
   while( 1 ) {
     if ( (r == driver_receive(ANY, &msg, &ipc_status)) != 0 ) { 
+=======
+  int ipc_status, r;
+
+  uint8_t irq_set; 
+
+  message msg;
+
+  if (timer_subscribe_int(&irq_set)) return 1;
+
+  while ( counter < time * (int)sys_hz()) {
+    if ( (r = driver_receive(ANY, &msg, &ipc_status)) != 0 ) { 
+>>>>>>> 54d418831557542b73c1b678315843544c7c7cca
       printf("driver_receive failed with: %d", r);
       continue;
     }
     if (is_ipc_notify(ipc_status)) {
       switch (_ENDPOINT_P(msg.m_source)) {
         case HARDWARE:			
+<<<<<<< HEAD
           if (msg.m_notify.interrupts & irq_set) {
             timer_int_handler();
           }
+=======
+          if (msg.m_notify.interrupts & BIT(irq_set)) { /* BIT() ATIVA A BITMASK CORRESPONDENTE AO irq_set */ 
+            timer_int_handler();
+
+            if(counter % (int) sys_hz() == 0)
+              timer_print_elapsed_time();
+          }
+          break;
+>>>>>>> 54d418831557542b73c1b678315843544c7c7cca
       }
     }
   }
 
   if(timer_unsubscribe_int()) return 1;
 
+<<<<<<< HEAD
   if(counter == time){
     time = timer_print_elapsed_time();
   }
+=======
+>>>>>>> 54d418831557542b73c1b678315843544c7c7cca
   return 0;
 }
