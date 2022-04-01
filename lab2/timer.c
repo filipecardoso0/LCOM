@@ -5,13 +5,16 @@
 
 #include "i8254.h"
 
+int counter = 0; 
+
 int (timer_set_frequency)(uint8_t timer, uint32_t freq) {
 
-  if (freq > TIMER_FREQ || freq == 0) return 1;
-
-  uint8_t freq_lsb, freq_msb;
-  uint16_t new_freq = 0;
+  uint8_t*  st = (uint8_t*) malloc(sizeof(uint8_t));
+  uint8_t target, ctrl_wrd, freq_lsb, freq_msb;
+  uint16_t new_freq;
   uint32_t check_freq; 
+
+  if (freq > TIMER_FREQ) return 1;
   
   check_freq = TIMER_FREQ / freq;
     
@@ -20,20 +23,11 @@ int (timer_set_frequency)(uint8_t timer, uint32_t freq) {
 
   if (util_get_LSB(new_freq, &freq_lsb)) return 1;
   if (util_get_MSB(new_freq, &freq_msb)) return 1;
-
-  uint8_t* st = (uint8_t*) malloc(sizeof(uint8_t));
-
-  if (timer_get_conf(timer, st)) {
-    free(st);
-    return 1;
-  }
-
-  uint8_t target, ctrl_wrd; 
+  
+  if (timer_get_conf(timer, st)) return 1;
 
   ctrl_wrd = *st & 0x0F;
   ctrl_wrd |= TIMER_LSB_MSB;
-
-  free(st);
 
   switch(timer){
     case 0: target = TIMER_0; break;
@@ -49,26 +43,37 @@ int (timer_set_frequency)(uint8_t timer, uint32_t freq) {
   if (sys_outb(target, (uint32_t) freq_lsb)) return 1;
   if (sys_outb(target, (uint32_t) freq_msb)) return 1;
 
+  free(st);
+
   return 0;
 }
 
 int (timer_subscribe_int)(uint8_t *bit_no) {
-    /* To be implemented by the students */
-  printf("%s is not yet implemented!\n", __func__);
 
-  return 1;
+  int *hook_id; 
+  hook_id = (int*)malloc(sizeof(int));
+  *hook_id = TIMER0_HOOKID; 
+
+  *bit_no = *hook_id; 
+
+  if (sys_irqsetpolicy(TIMER0_IRQ, IRQ_REENABLE, hook_id) != OK) return 1;
+  if (sys_irqenable(hook_id) != OK) return 1;
+
+  free(hook_id);
+
+  return 0;
 }
 
 int (timer_unsubscribe_int)() {
-  /* To be implemented by the students */
-    printf("%s is not yet implemented!\n", __func__);
 
-  return 1;
+  if (sys_irqdisable(TIMER0_HOOKID) != OK) return 1;
+  if (sys_irqrmpolicy(TIMER0_HOOKID) != OK) return 1;
+
+  return 0;
 }
 
 void (timer_int_handler)() {
-  /* To be implemented by the students */
-  printf("%s is not yet implemented!\n", __func__);
+  counter++;
 }
 
 int (timer_get_conf)(uint8_t timer, uint8_t *st) {
