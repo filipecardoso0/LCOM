@@ -8,10 +8,10 @@
 #define IBF         0x60    /*Input buffer port register*/
 #define STATREG     0x64    /*Status register port register*/
 #define KBD_IRQ     0x01    /*KBD IRQ line*/
-#define IRQ_REENABLE 0x1	  /* reenable IRQ line after interrupt */
+/* #define IRQ_REENABLE 0x1	   reenable IRQ line after interrupt */
 
 /*Scancode Macros*/
-#define TWO_BYTES   0XE0    /*Signals the scancode is two bytes long/*
+#define TWO_BYTES   0XE0    /*Signals the scancode is two bytes long*/
 #define ESC_KEY     0x81    /*ESC_KEY breakcode*/
 #define BREAK       0x80    /*Break code check*/
 

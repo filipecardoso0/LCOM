@@ -2,10 +2,14 @@
 #include <lcom/lab3.h>
 #include <stdbool.h>
 #include <stdint.h>
+#include "kbd.c"
 
 #include "i8042.h"
 
 extern uint8_t bytes[2];
+extern uint16_t scancode;
+extern uint32_t cnt;
+
 
 int main(int argc, char *argv[]) {
   // sets the language of LCF messages (can be either EN-US or PT-PT)
@@ -41,9 +45,6 @@ int(kbd_test_scan)() {
   message msg;
 
   if (kbd_subscribe(&irq_set)) return 1;
-  
-  extern uint16_t scancode;
-  extern int cnt;
 
   while (scancode != ESC_KEY) {
     if ( (r = driver_receive(ANY, &msg, &ipc_status)) != 0 ) { 
@@ -80,14 +81,14 @@ int (kbd_test_poll)() {
 
   bool make;
   size_t size;
-  extern uint8_t scancode, statuscode;
+  uint8_t statuscode;
   int hook_id;
   while (scancode != ESC_KEY){
     util_sys_inb(STATREG, &statuscode);
     if (OBF_FULL) return 1;
-    if (AUX & statuscode == 0) return 1;
+    if ((AUX & statuscode) == 0) return 1;
 
-    kbd_ih();
+    kbc_ih();
     kbd_print_scancode(make, size, bytes);
     tickdelay(micros_to_ticks(DELAY_US));
     
