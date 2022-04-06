@@ -2,14 +2,12 @@
 #include <lcom/lab3.h>
 #include <stdbool.h>
 #include <stdint.h>
-#include "kbd.c"
 
-#include "i8042.h"
+#include "kbd.h"
 
-extern uint8_t bytes[2];
-extern uint16_t scancode;
-extern uint32_t cnt;
-
+uint32_t cnt = 0;
+uint16_t scancode = 0x0000;
+int hook_id = 1;
 
 int main(int argc, char *argv[]) {
   // sets the language of LCF messages (can be either EN-US or PT-PT)
@@ -35,40 +33,39 @@ int main(int argc, char *argv[]) {
   return 0;
 }
 
-
 int(kbd_test_scan)() {
   
   uint8_t irq_set;
   bool make;
   size_t size;
   int ipc_status, r;
+  uint8_t bytes[2];
   message msg;
 
   if (kbd_subscribe(&irq_set)) return 1;
 
-  while (scancode != ESC_KEY) {
+  while (bytes[0] != ESC_KEY) {
     if ( (r = driver_receive(ANY, &msg, &ipc_status)) != 0 ) { 
       printf("driver_receive failed with: %d", r);
-      continue;
+      continue;  
     }
     if (is_ipc_notify(ipc_status)) {
       switch (_ENDPOINT_P(msg.m_source)) {
         case HARDWARE:			
           if (msg.m_notify.interrupts & BIT(irq_set)) { 
             kbc_ih();
-            if (!parse_scancode(&make, &size, bytes))
+            if (!parse_scancode(&make, &size, bytes)) {
               kbd_print_scancode(make, size, bytes);
-              for(int i = 0; i < 2; i++){
-                bytes[i] = 0x00;
-              }
           }
+        }
       }
     }
-    sys_outb(OBF, KBD_IRQ);    
   }
 
+  if(sys_outb(OBF, KBD_IRQ)) return 1; 
+
   //Keyboard unsubscribe
-  if (kbd_unsubscribe(&irq_set)) return 1;
+  if (kbd_unsubscribe()) return 1;
 
   //Prints sys_inb
   if (kbd_print_no_sysinb(cnt)) return 1;
@@ -81,22 +78,35 @@ int (kbd_test_poll)() {
 
   bool make;
   size_t size;
-  uint8_t statuscode;
-  int hook_id;
+  uint8_t statuscode, cmdbyte;
+  uint8_t bytes[2];
+
+  if (sys_outb(STATREG, R_CMDBYTE)) return 1;
+  if (util_sys_inb(OBF, &cmdbyte)) return 1;
+
   while (scancode != ESC_KEY){
+    printf("Here 1\n");
     util_sys_inb(STATREG, &statuscode);
-    if (OBF_FULL) return 1;
-    if ((AUX & statuscode) == 0) return 1;
-
-    kbc_ih();
-    kbd_print_scancode(make, size, bytes);
+    printf("Here 2\n");
+    if (statuscode & OBF_FULL){ //return 1;
+      printf("Here 3\n");
+      // if ((AUX & statuscode) == 0) return 1;
+      printf("Here 4\n");
+      kbc_ih();
+      printf("Here 5\n");
+      if (!parse_scancode(&make, &size, bytes))
+        kbd_print_scancode(make, size, bytes);
+      printf("Here 6\n");  
+    }
     tickdelay(micros_to_ticks(DELAY_US));
-    
-    if (sys_irqsetpolicy(KBD_IRQ, IRQ_REENABLE, &hook_id)) return 1; //Reeenables KBD Interruptions
-    if (kbd_print_no_sysinb(cnt)) return 1; //Prints sys_inb
-
+    printf("Here 7\n");
   } 
-
+  
+  
+  if (sys_outb(STATREG, cmdbyte)) return 1;
+  printf("Here 8\n");
+  if (kbd_print_no_sysinb(cnt)) return 1; //Prints sys_inb
+  printf("Here 9\n");
   return 0;
 }
 

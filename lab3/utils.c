@@ -1,9 +1,4 @@
-#include <lcom/lcf.h>
-#include <i8042.h>
-
-#include <stdint.h>
-
-extern int cnt;
+#include "utils.h"
 
 int(util_get_LSB)(uint16_t val, uint8_t *lsb) {
   *lsb = val & _LSB;
