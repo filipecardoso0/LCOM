@@ -5,9 +5,9 @@
 #include "utils.h"
 
 extern int hook_id;
-extern uint16_t scancode;
+extern uint8_t scancode;
 
-bool parse_scancode(bool*, size_t*, uint8_t*);
+int parse_scancode(bool*, size_t*, uint8_t*);
 
 void (kbc_ih)(void);
 int (kbd_subscribe)(uint8_t*);

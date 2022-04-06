@@ -1,47 +1,40 @@
 #include "kbd.h"
 
+int hook_id = 1;
+uint8_t scancode;
+bool error, two_bytes = false;
 
-bool parse_scancode(bool *make, size_t *size, uint8_t *bytes){
-  if (scancode == 0xFFFF) return 1;
-
-  uint8_t lsb, msb;
-
-  if (util_get_LSB(scancode, &lsb)) return 1;
-  if (util_get_MSB(scancode, &msb)) return 1;
-
-  if(lsb & BREAK) *make = false;
-  else *make = true;
-
-  if(msb == TWO_BYTES) {
-    size = (size_t *) 2;
-    bytes[1] = msb;
+int parse_scancode(bool *make, size_t *size, uint8_t *bytes) {
+  if (error) return -1;
+  if (scancode == TWO_BYTES) {
+    bytes[1] = scancode;
+    two_bytes = true;
+    return 1;
   }
-  else size = (size_t *) 1;
-
-  bytes[0] = lsb;
+  else {
+    if (two_bytes) {
+      two_bytes = false;
+      *size = 2;
+    }
+    else *size = 1;
+    bytes[0] = scancode;
+    *make = !(scancode & BREAK);
+  }
   return 0;
 }
 
 void (kbc_ih)(void) {
-  uint8_t st, buffer;
+  uint8_t st;
+  error = false;
+
   if (util_sys_inb(STATREG, &st)) return;
-  
-  if(st & PAR_ERROR || st & TIMEOUT){
-    scancode = 0xFFFF;
-    printf("Error\n");
+
+  if (st & PAR_ERROR || st & TIMEOUT || st & AUX) {
+    util_sys_inb(OBF, &scancode);
+    error = true;
     return;
-  } 
-
-
-  if (util_sys_inb(OBF, &buffer)) return;
-
-  if(buffer == TWO_BYTES){
-    scancode |= buffer;
-    scancode = scancode << (8);
-    if(util_sys_inb(OBF, &buffer)) return;
   }
-  
-  scancode |= buffer;
+  if (util_sys_inb(OBF, &scancode)) return;
 }
 
 int (kbd_subscribe)(uint8_t *bit_no) {

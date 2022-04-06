@@ -6,8 +6,6 @@
 #include "kbd.h"
 
 uint32_t cnt = 0;
-uint16_t scancode = 0x0000;
-int hook_id = 1;
 
 int main(int argc, char *argv[]) {
   // sets the language of LCF messages (can be either EN-US or PT-PT)
@@ -44,7 +42,7 @@ int(kbd_test_scan)() {
 
   if (kbd_subscribe(&irq_set)) return 1;
 
-  while (bytes[0] != ESC_KEY) {
+  while (scancode != ESC_BREAK_KEY) {
     if ( (r = driver_receive(ANY, &msg, &ipc_status)) != 0 ) { 
       printf("driver_receive failed with: %d", r);
       continue;  
@@ -54,9 +52,8 @@ int(kbd_test_scan)() {
         case HARDWARE:			
           if (msg.m_notify.interrupts & BIT(irq_set)) { 
             kbc_ih();
-            if (!parse_scancode(&make, &size, bytes)) {
+            if (!parse_scancode(&make, &size, bytes))
               kbd_print_scancode(make, size, bytes);
-          }
         }
       }
     }
@@ -84,7 +81,7 @@ int (kbd_test_poll)() {
   if (sys_outb(STATREG, R_CMDBYTE)) return 1;
   if (util_sys_inb(OBF, &cmdbyte)) return 1;
 
-  while (scancode != ESC_KEY){
+  while (scancode != ESC_BREAK_KEY){
     printf("Here 1\n");
     util_sys_inb(STATREG, &statuscode);
     printf("Here 2\n");

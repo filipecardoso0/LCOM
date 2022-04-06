@@ -12,7 +12,7 @@
 
 /*Scancode Macros*/
 #define TWO_BYTES   0XE0    /*Signals the scancode is two bytes long*/
-#define ESC_KEY     0x81    /*ESC_KEY breakcode*/
+#define ESC_BREAK_KEY     0x81    /*ESC_KEY breakcode*/
 #define BREAK       0x80    /*Break code check*/
 
 /*Command Macros*/
@@ -31,7 +31,7 @@
 /*Status Register Macros*/
 #define PAR_ERROR   BIT(7)  /*Parity Error*/
 #define TIMEOUT     BIT(6)  /*Timeout Error*/
-#define AUX         BIT(5) /*Checks if Mous is being interrupted*/
+#define AUX         BIT(5)  /*Checks if Mous is being interrupted*/
 #define IBF_FULL    BIT(1)  /*Input Buffer is full (can't write)*/
 #define OBF_FULL    BIT(0)  /*Output Buffer is full (can read)*/
 
