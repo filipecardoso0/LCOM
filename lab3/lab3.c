@@ -6,6 +6,7 @@
 #include "kbd.h"
 
 uint32_t cnt = 0;
+uint8_t bytes[2];
 
 int main(int argc, char *argv[]) {
   // sets the language of LCF messages (can be either EN-US or PT-PT)
@@ -37,7 +38,6 @@ int(kbd_test_scan)() {
   bool make;
   size_t size;
   int ipc_status, r;
-  uint8_t bytes[2];
   message msg;
 
   if (kbd_subscribe(&irq_set)) return 1;
@@ -78,32 +78,50 @@ int (kbd_test_poll)() {
   uint8_t statuscode, cmdbyte;
   uint8_t bytes[2];
 
-  if (sys_outb(STATREG, R_CMDBYTE)) return 1;
-  if (util_sys_inb(OBF, &cmdbyte)) return 1;
-
-  while (scancode != ESC_BREAK_KEY){
-    printf("Here 1\n");
-    util_sys_inb(STATREG, &statuscode);
-    printf("Here 2\n");
-    if (statuscode & OBF_FULL){ //return 1;
-      printf("Here 3\n");
-      // if ((AUX & statuscode) == 0) return 1;
-      printf("Here 4\n");
-      kbc_ih();
-      printf("Here 5\n");
-      if (!parse_scancode(&make, &size, bytes))
-        kbd_print_scancode(make, size, bytes);
-      printf("Here 6\n");  
+  // Issue command to read command byte
+  for (unsigned i = 0; i < 5000; i++) {
+    if (util_sys_inb(STATREG, &statuscode)) return 1;
+    if( (statuscode & IBF_FULL) == 0 ) {
+      sys_outb(CMDREG, R_CMDBYTE);
+      break;
     }
     tickdelay(micros_to_ticks(DELAY_US));
-    printf("Here 7\n");
+  }
+
+  // Read return value from the command
+  for (unsigned i = 0; i < 5000; i++) {
+    if (util_sys_inb(STATREG, &statuscode)) return 1;
+    if (statuscode & OBF_FULL ) {
+      if (util_sys_inb(OBF, &cmdbyte)) return 1;
+      if ((statuscode & (PAR_ERROR | TIMEOUT)) == 0 ) break;
+      else return 1;
+    }
+    tickdelay(micros_to_ticks(DELAY_US));
+  }
+
+  while (scancode != ESC_BREAK_KEY) {
+    if (util_sys_inb(STATREG, &statuscode)) return 1;
+    if (statuscode & OBF_FULL && !(statuscode & AUX)) { 
+      kbc_ih();
+      if (!parse_scancode(&make, &size, bytes))
+        kbd_print_scancode(make, size, bytes);
+    }
+    tickdelay(micros_to_ticks(DELAY_US));
   } 
   
-  
-  if (sys_outb(STATREG, cmdbyte)) return 1;
-  printf("Here 8\n");
-  if (kbd_print_no_sysinb(cnt)) return 1; //Prints sys_inb
-  printf("Here 9\n");
+  // Issue command to write command byte and write it
+  for (unsigned i = 0; i < 5000; i++) {
+    if (util_sys_inb(STATREG, &statuscode)) return 1;
+    if( (statuscode & IBF_FULL) == 0 ) {
+      if (sys_outb(CMDREG, W_CMDBYTE)) return 1;
+      if (sys_outb(IBF, cmdbyte | BIT(0))) return 1;
+      break;
+    }
+    tickdelay(micros_to_ticks(DELAY_US));
+  } 
+
+  if (kbd_print_no_sysinb(cnt)) return 1;
+
   return 0;
 }
 

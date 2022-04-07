@@ -7,7 +7,7 @@ bool error, two_bytes = false;
 int parse_scancode(bool *make, size_t *size, uint8_t *bytes) {
   if (error) return -1;
   if (scancode == TWO_BYTES) {
-    bytes[1] = scancode;
+    bytes[0] = scancode;
     two_bytes = true;
     return 1;
   }
@@ -15,9 +15,12 @@ int parse_scancode(bool *make, size_t *size, uint8_t *bytes) {
     if (two_bytes) {
       two_bytes = false;
       *size = 2;
+      bytes[1] = scancode;
     }
-    else *size = 1;
-    bytes[0] = scancode;
+    else {
+      *size = 1;
+      bytes[0] = scancode;
+    }
     *make = !(scancode & BREAK);
   }
   return 0;
@@ -29,7 +32,7 @@ void (kbc_ih)(void) {
 
   if (util_sys_inb(STATREG, &st)) return;
 
-  if (st & PAR_ERROR || st & TIMEOUT || st & AUX) {
+  if (st & PAR_ERROR || st & TIMEOUT) {
     util_sys_inb(OBF, &scancode);
     error = true;
     return;

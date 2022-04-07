@@ -7,6 +7,7 @@
 #define OBF         0x60    /*Output buffer port register*/
 #define IBF         0x60    /*Input buffer port register*/
 #define STATREG     0x64    /*Status register port register*/
+#define CMDREG      0x64
 #define KBD_IRQ     0x01    /*KBD IRQ line*/
 /* #define IRQ_REENABLE 0x1	   reenable IRQ line after interrupt */
 
