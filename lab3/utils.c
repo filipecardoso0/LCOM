@@ -15,9 +15,8 @@ int(util_get_MSB)(uint16_t val, uint8_t *msb) {
 int (util_sys_inb)(int port, uint8_t* value) {
 
   cnt++;
-  uint32_t* ptr32 = (uint32_t*)malloc(sizeof(uint8_t));
-  if (sys_inb(port, ptr32)) return 1;
-  *value = *ptr32;
-  free(ptr32);
+  uint32_t read;
+  if (sys_inb(port, &read)) return 1;
+  *value = (uint8_t) read;
   return 0;
 }

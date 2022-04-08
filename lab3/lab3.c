@@ -59,7 +59,7 @@ int(kbd_test_scan)() {
     }
   }
 
-  if(sys_outb(OBF, KBD_IRQ)) return 1; 
+  // if(sys_outb(OBF, KBD_IRQ)) return 1; 
 
   //Keyboard unsubscribe
   if (kbd_unsubscribe()) return 1;
@@ -75,29 +75,8 @@ int (kbd_test_poll)() {
 
   bool make;
   size_t size;
-  uint8_t statuscode, cmdbyte;
+  uint8_t statuscode;
   uint8_t bytes[2];
-
-  // Issue command to read command byte
-  for (unsigned i = 0; i < 5000; i++) {
-    if (util_sys_inb(STATREG, &statuscode)) return 1;
-    if( (statuscode & IBF_FULL) == 0 ) {
-      sys_outb(CMDREG, R_CMDBYTE);
-      break;
-    }
-    tickdelay(micros_to_ticks(DELAY_US));
-  }
-
-  // Read return value from the command
-  for (unsigned i = 0; i < 5000; i++) {
-    if (util_sys_inb(STATREG, &statuscode)) return 1;
-    if (statuscode & OBF_FULL ) {
-      if (util_sys_inb(OBF, &cmdbyte)) return 1;
-      if ((statuscode & (PAR_ERROR | TIMEOUT)) == 0 ) break;
-      else return 1;
-    }
-    tickdelay(micros_to_ticks(DELAY_US));
-  }
 
   while (scancode != ESC_BREAK_KEY) {
     if (util_sys_inb(STATREG, &statuscode)) return 1;
@@ -114,7 +93,7 @@ int (kbd_test_poll)() {
     if (util_sys_inb(STATREG, &statuscode)) return 1;
     if( (statuscode & IBF_FULL) == 0 ) {
       if (sys_outb(CMDREG, W_CMDBYTE)) return 1;
-      if (sys_outb(IBF, cmdbyte | BIT(0))) return 1;
+      if (sys_outb(IBF, INT)) return 1;
       break;
     }
     tickdelay(micros_to_ticks(DELAY_US));

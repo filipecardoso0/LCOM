@@ -40,6 +40,9 @@
 #define _LSB 0x00FF         /*Least Significant Byte*/
 #define _MSB 0xFF00         /*Most Significant Byte*/
 
+/* CommandByte macros*/
+#define INT         BIT(0) /*enable interrupt on OBF, from keyboard*/
+
 /*Tick*/
 
 #define DELAY_US 20000
