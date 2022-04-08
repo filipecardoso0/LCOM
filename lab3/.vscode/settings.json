@@ -9,6 +9,8 @@
   "files.associations": {
     "lcf.h": "c",
     "stdbool.h": "c",
-    "lab3.h": "c"
+    "lab3.h": "c",
+    "stdint.h": "c",
+    "timer.h": "c"
   },
 }
