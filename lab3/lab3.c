@@ -1,14 +1,12 @@
 #include <lcom/lcf.h>
 #include <lcom/lab3.h>
-#include <lcom/timer.h>
-
 #include <stdbool.h>
 #include <stdint.h>
 
 #include "kbd.h"
+#include "timer.c"
 
 uint32_t cnt = 0; 
-extern int counter; 
 uint8_t bytes[2];
 
 int main(int argc, char *argv[]) {
@@ -118,6 +116,7 @@ int(kbd_test_timed_scan)(uint8_t n) {
   size_t size;
   int ipc_status, r;
   message msg;
+  extern int counter; 
 
   if (timer_subscribe_int(&irq_set_timer)) return 1; 
   if (kbd_subscribe(&irq_set_kbd)) return 1; 

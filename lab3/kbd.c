@@ -1,6 +1,6 @@
 #include "kbd.h"
 
-int hook_id = 1;
+int hook_id_kbd = 1;
 uint8_t scancode;
 bool error, two_bytes = false;
 
@@ -41,16 +41,16 @@ void (kbc_ih)(void) {
 }
 
 int (kbd_subscribe)(uint8_t *bit_no) {
-  *bit_no = hook_id; 
+  *bit_no = hook_id_kbd; 
 
-  if (sys_irqsetpolicy(KBD_IRQ, IRQ_REENABLE | IRQ_EXCLUSIVE, &hook_id) != OK) return 1;
+  if (sys_irqsetpolicy(KBD_IRQ, IRQ_REENABLE | IRQ_EXCLUSIVE, &hook_id_kbd) != OK) return 1;
 
   return 0;
 }
 
 int (kbd_unsubscribe)() {
   
-  if (sys_irqrmpolicy(&hook_id)) return 1;
+  if (sys_irqrmpolicy(&hook_id_kbd)) return 1;
   
   return 0;
 }

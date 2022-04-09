@@ -1,0 +1,11 @@
+.depend
+.gdbinit
+kbd.d
+kbd.o
+lab3
+lab3.d
+lab3.o
+output.txt
+trace.txt
+utils.d
+utils.o

@@ -4,7 +4,7 @@
 #include <lcom/lcf.h>
 #include "utils.h"
 
-extern int hook_id;
+extern int hook_id_kbd;
 extern uint8_t scancode;
 
 int parse_scancode(bool*, size_t*, uint8_t*);
