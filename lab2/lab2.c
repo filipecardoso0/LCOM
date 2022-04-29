@@ -14,11 +14,11 @@ int main(int argc, char *argv[]) {
 
   // enables to log function invocations that are being "wrapped" by LCF
   // [comment this out if you don't want/need it]
-  lcf_trace_calls("/home/lcom/labs/lab2/trace.txt");
+  //lcf_trace_calls("/home/lcom/labs/lab2/trace.txt");
 
   // enables to save the output of printf function calls on a file
   // [comment this out if you don't want/need it]
-  lcf_log_output("/home/lcom/labs/lab2/output.txt");
+  //lcf_log_output("/home/lcom/labs/lab2/output.txt");
 
   // handles control over to LCF
   // [LCF handles command line arguments and invokes the right function]
@@ -32,6 +32,12 @@ int main(int argc, char *argv[]) {
   return 0;
 }
 
+/*
+Ler a configuração de um timer
+Como?
+Chamar timer_get_conf() seguido do timer_display_conf().
+
+*/
 int(timer_test_read_config)(uint8_t timer, enum timer_status_field field) {
 
   uint8_t st;
@@ -40,12 +46,48 @@ int(timer_test_read_config)(uint8_t timer, enum timer_status_field field) {
   return 0;
 }
 
+/*
+Programa a frequência da geração de interrupts do Timer 0 e testa essa frequência;
+
+Como?
+
+Invocando apenas o timer_set_frequency();
+
+*/
 int(timer_test_time_base)(uint8_t timer, uint32_t freq) {
 
   if(timer_set_frequency(timer, freq)) return 1;
   
   return 0;
 }
+
+/*
+Testa o interrupt handler do Timer 0;
+Subscreve os interrupts do Timer 0 e imprime uma mensagem a cada segundo durante o intervalo de tempo definido em time;
+
+Como?
+
+Criar uma variável que receba o IRQ do timer (irq_set) IRQ's tem 8 bits, neste caso;
+
+Subscrever os interrupts do timer 0 (linha 83);
+
+While loop do Lab:
+
+Mudar a condição (contador de interrupts tem que ser inferior ao intervalo de tempo)-> linha 89
+
+Definir o r para int;
+
+Case:
+
+-> No if:
+
+Invocar o interrupt handler (timer_int_handler);
+
+A cada segundo, imprimir a mensagem (linhas 110 e 111);
+
+
+Após o While, anular a subscrição dos interrupts (linha 121);
+*/
 
 int(timer_test_int)(uint8_t time) {
  
