@@ -60,7 +60,7 @@ int(kbd_test_scan)() {
     }
   }
 
-  // if(sys_outb(OBF, KBD_IRQ)) return 1; 
+ // if(sys_outb(OBF, KBD_IRQ)) return 1; 
 
   //Keyboard unsubscribe
   if (kbd_unsubscribe()) return 1;
@@ -71,7 +71,7 @@ int(kbd_test_scan)() {
 
   return 0;
 }
-
+ 
 int (kbd_test_poll)() {
 
   bool make;
