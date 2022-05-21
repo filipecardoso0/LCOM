@@ -37,7 +37,7 @@ int main(int argc, char *argv[]) {
 
 int(video_test_init)(uint16_t mode, uint8_t delay) {
   
-  if (set_graphics_mode(mode)) return 1;
+  vg_init(mode);
 
   sleep(delay);
   
@@ -49,7 +49,8 @@ int(video_test_init)(uint16_t mode, uint8_t delay) {
 int(video_test_rectangle)(uint16_t mode, uint16_t x, uint16_t y,
                           uint16_t width, uint16_t height, uint32_t color) {
 
-  if (draw_rectangle(mode, x, y, width, height, color)) return 1;
+  vg_init(mode);
+  if (vg_draw_rectangle(x, y, width, height, color)) return 1;
 
   uint8_t irq_set;
   int ipc_status, r;
@@ -73,6 +74,8 @@ int(video_test_rectangle)(uint16_t mode, uint16_t x, uint16_t y,
   }
   
   if (kbd_unsubscribe()) return 1;
+
+  if (vg_exit()) return 1;
 
   return 0;
 }
