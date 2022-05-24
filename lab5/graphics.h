@@ -10,4 +10,18 @@
 #define VALID_FUNC 0x4F
 #define SUCCESS_FUNC 0x00
 
+#define MODE_INDEXED 0x105
+#define MODE_DIRECT_15 0x110
+#define MODE_DIRECT_24 0x115
+#define MODE_DIRECT_16 0x11A
+#define MODE_DIRECT_32 0x14C
+
+#define GET_RED(n)          (0xFF & ((n) >> 16))
+#define GET_GRE(n)          (0xFF & ((n) >>  8))
+#define GET_BLU(n)          (0xFF & (n      ))
+#define SET_RED(n)          (((n)&0xFF) << 16)
+#define SET_GRE(n)          (((n)&0xFF) <<  8)
+#define SET_BLU(n)          (((n)&0xFF)      )
+#define SET_COLOR(r,g,b)    (SET_RED(r) | SET_GRE(g) | SET_BLU(b))
+
 #endif
