@@ -116,8 +116,38 @@ int(video_test_pattern)(uint16_t mode, uint8_t no_rectangles, uint32_t first, ui
 }
 
 int(video_test_xpm)(xpm_map_t xpm, uint16_t x, uint16_t y) {
-  /* To be completed */
-  printf("%s(%8p, %u, %u): under construction\n", __func__, xpm, x, y);
+
+  vg_init(MODE_INDEXED);
+  
+  enum xpm_image_type type = XPM_INDEXED;
+  xpm_image_t img;
+  uint8_t* map = xpm_load(xpm, type, &img);
+  xpm_draw(map, x, y, img.width, img.height);
+
+  uint8_t irq_set;
+  int ipc_status, r;
+  message msg;
+
+  if (kbd_subscribe(&irq_set)) return 1;
+
+  while (scancode != ESC_BREAK_KEY) {
+    if ( (r = driver_receive(ANY, &msg, &ipc_status)) != 0 ) { 
+      printf("driver_receive failed with: %d", r);
+      continue;  
+    }
+    if (is_ipc_notify(ipc_status)) {
+      switch (_ENDPOINT_P(msg.m_source)) {
+        case HARDWARE:			
+          if (msg.m_notify.interrupts & BIT(irq_set)) { 
+            kbc_ih();
+        }
+      }
+    }
+  }
+  
+  if (kbd_unsubscribe()) return 1;
+
+  if (vg_exit()) return 1;
 
   return 1;
 }

@@ -22,6 +22,6 @@
 #define SET_RED(n)            (((n)&0xFF) << 16)
 #define SET_GREEN(n)          (((n)&0xFF) <<  8)
 #define SET_BLUE(n)           (((n)&0xFF)      )
-#define SET_COLOR(r,g,b)      (SET_RED(r) | SET_GRE(g) | SET_BLU(b))
+#define SET_COLOR(r,g,b)      (SET_RED(r) | SET_GREEN(g) | SET_BLUE(b))
 
 #endif
