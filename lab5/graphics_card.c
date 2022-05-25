@@ -102,7 +102,7 @@ int draw_pattern(uint16_t mode, uint8_t no_rectangles, uint32_t first, uint8_t s
 int xpm_draw(uint8_t* map, uint16_t x, uint16_t y, uint16_t width, uint16_t height) {
     for (uint16_t i = 0; i < width; i++) {
         for (uint16_t j = 0; j < height; j++) {
-            if (vg_draw_pixel(x, y, map[i + j * width])) return 1;
+            if (vg_draw_pixel(x + i, y + j, map[i + j * width])) return 1;
         }
     }
     return 0;
