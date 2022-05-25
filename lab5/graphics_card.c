@@ -107,3 +107,12 @@ int xpm_draw(uint8_t* map, uint16_t x, uint16_t y, uint16_t width, uint16_t heig
     }
     return 0;
 }
+
+int paint_screen(uint32_t color) {
+    for (unsigned i = 0; i < h_res; i++) {
+        for (unsigned j = 0; j < v_res; j++) {
+            if (vg_draw_pixel(i, j, color)) return 1;
+        }
+    }
+    return 0;
+}

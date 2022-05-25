@@ -24,4 +24,6 @@
 #define SET_BLUE(n)           (((n)&0xFF)      )
 #define SET_COLOR(r,g,b)      (SET_RED(r) | SET_GREEN(g) | SET_BLUE(b))
 
+#define BLACK 0x000000
+
 #endif
