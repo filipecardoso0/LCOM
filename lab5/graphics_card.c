@@ -9,8 +9,15 @@ static unsigned bytes_per_pixel;
 static uint8_t red_mask;
 static uint8_t green_mask;
 static uint8_t blue_mask;
+static uint8_t red_position;
+static uint8_t green_position;
+static uint8_t blue_position;
+
+static uint16_t video_mode;
 
 void *(vg_init)(uint16_t mode) {
+
+    video_mode = mode;
 
     struct minix_mem_range mr;
     int r;
@@ -22,13 +29,17 @@ void *(vg_init)(uint16_t mode) {
     h_res = mode_info.XResolution;
     v_res = mode_info.YResolution;
     bits_per_pixel = mode_info.BitsPerPixel;
-    bytes_per_pixel = (mode_info.BitsPerPixel + mode_info.BitsPerPixel % 8) / 8;
+    bytes_per_pixel = (mode_info.BitsPerPixel + 7) / 8;
     unsigned vram_base = (phys_bytes)mode_info.PhysBasePtr;
     unsigned vram_size = h_res * v_res * bytes_per_pixel;
 
     red_mask = mode_info.RedMaskSize;
     green_mask = mode_info.GreenMaskSize;
     blue_mask = mode_info.BlueMaskSize;
+
+    red_position = mode_info.RedFieldPosition;
+    green_position = mode_info.GreenFieldPosition;
+    blue_position = mode_info.BlueFieldPosition;
 
     mr.mr_base = vram_base;
     mr.mr_limit = vram_base + vram_size;
@@ -55,6 +66,14 @@ void *(vg_init)(uint16_t mode) {
 int(vg_draw_pixel)(uint16_t x, uint16_t y, uint32_t color) {
     if (x < h_res && y < v_res) {
       char* init_address = (char*)video_mem + (y * h_res + x) * bytes_per_pixel;
+
+        if (video_mode != MODE_INDEXED) {
+            uint32_t red, green, blue;
+            red = (color >> 16) & (BIT(red_mask) - 1);
+            green = (color >> 8) & (BIT(green_mask) - 1);
+            blue = (color) & (BIT(blue_mask) - 1);
+            color = (red << red_position) | (green << green_position) | (blue << blue_position);
+        }
 
       memcpy(init_address, &color, bytes_per_pixel);
       
