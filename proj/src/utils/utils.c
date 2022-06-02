@@ -1,7 +1,4 @@
-#include <i8254.h>
-
-#include <stdint.h>
-
+#include <utils.h>
 
 int(util_get_LSB)(uint16_t val, uint8_t *lsb) {
   *lsb = val & _LSB;

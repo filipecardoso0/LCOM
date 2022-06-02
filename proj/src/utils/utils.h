@@ -1,9 +1,13 @@
 #ifndef _UTILS_H_
 #define _UTILS_H_
 
-#include <lcom/lcf.h>
-#include <i8042.h>
+#include <timermacros.h>
 #include <stdint.h>
+
+typedef struct{
+    int row;
+    int col;
+}position;
 
 extern uint32_t cnt;
 

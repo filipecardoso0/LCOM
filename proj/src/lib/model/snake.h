@@ -1,15 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "screen.h"
-
-typedef struct{
-    Node* next;
-    screenPixel* cell;
-    int size;
-}list;
+#include "list.h"
+#include "utils.h"
+#include "foo.h"
 
 typedef struct{
     list snakeTail;
+    position* headPos;
     int minSize;
 }snake;
 
@@ -33,7 +30,7 @@ snake* createSnake(snake* snake, int size);
  * @param pos the position of the snake
  * @return pointer to the created snake upon success, NULL otherwise
  */
-snake* createSnake(snake* snake, int size, screenPixel* pos);
+snake* createSnake(snake* snake, int size, position* pos);
 
 /**
  * @brief Verifies if the the snake's next move will result in a collision
@@ -42,7 +39,7 @@ snake* createSnake(snake* snake, int size, screenPixel* pos);
  * @param cell the cell to where the snake wants to move
  * @return 0 if there's no collision, 1 if there's a collision
  */
-int collides(snake* snake, screenPixel* cell);
+int collides(snake* snake, position* newPos);
 
 /**
  * @brief moves snake according to user action. Verifies if it the movement
@@ -90,7 +87,7 @@ void moveRight(snake* snake);
  * @param foo pointer to the food piece to be eaten
  * @return poitner to the snake upon success, NULL otherwise
  */
-snake* eatFoo(snake* snake, foo* foo)
+snake* eatFoo(snake* snake, foo* foo);
 
 /**
  * @brief Verfies if snake went under the minimum size and died
