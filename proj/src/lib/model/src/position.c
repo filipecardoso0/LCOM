@@ -1,4 +1,4 @@
-#include "position.h"
+#include "../include/position.h"
 
 position_t* 
 position_new(uint16_t x, uint16_t y)

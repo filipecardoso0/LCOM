@@ -1,4 +1,4 @@
-#include "snake.h"
+#include "../include/snake.h"
 
 struct tail_piece {
     tail_piece_t* next_piece;

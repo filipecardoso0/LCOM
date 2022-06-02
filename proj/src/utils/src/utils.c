@@ -1,4 +1,4 @@
-#include "utils.h"
+#include "../include/utils.h"
 
 int(util_get_LSB)(uint16_t val, uint8_t *lsb) {
   *lsb = val & 0xFF;

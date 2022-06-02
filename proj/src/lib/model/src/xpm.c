@@ -1,4 +1,4 @@
-#include "xpm.h"
+#include "../include/xpm.h"
 
 xpm_t* 
 xpm_new(xpm_map_t xpm, uint16_t x, uint16_t y) 

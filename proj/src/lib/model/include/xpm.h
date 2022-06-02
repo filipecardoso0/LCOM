@@ -3,7 +3,7 @@
 
 #include <lcom/lcf.h>
 
-#include "../../drivers/graphic/graphic.h"
+#include "../../../drivers/graphic/include/graphic.h"
 
 struct xpm {
     uint16_t x, y, width, height;

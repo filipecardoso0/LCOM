@@ -3,7 +3,7 @@
 
 #include <lcom/lcf.h>
 
-#include "../../utils/utils.h"
+#include "../../../utils/include/utils.h"
 #include "kbd_macros.h"
 
 extern int hook_id_kbd;

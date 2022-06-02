@@ -1,4 +1,4 @@
-#include "kbd.h"
+#include "../include/kbd.h"
 
 int hook_id_kbd = 1;
 uint8_t scancode;

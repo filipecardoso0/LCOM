@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 
-#include "timermacros.h"
+#include "../include/timer_macros.h"
 
 int counter = 0; 
 int hook_id = 0; 

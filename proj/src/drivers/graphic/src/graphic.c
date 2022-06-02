@@ -1,4 +1,4 @@
-#include "graphic.h"
+#include "../include/graphic.h"
 
 static void *video_mem;
 static unsigned h_res;
