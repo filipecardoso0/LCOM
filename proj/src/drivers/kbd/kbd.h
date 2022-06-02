@@ -2,7 +2,9 @@
 #define _KBD_H_
 
 #include <lcom/lcf.h>
-#include "utils.h"
+
+#include "../../utils/utils.h"
+#include "kbd_macros.h"
 
 extern int hook_id_kbd;
 extern uint8_t scancode;

@@ -1,15 +1,13 @@
 #ifndef _UTILS_H_
 #define _UTILS_H_
 
-#include <timermacros.h>
+#include <lcom/lcf.h>
 #include <stdint.h>
 
 typedef struct{
     int row;
     int col;
 }position;
-
-extern uint32_t cnt;
 
 int(util_get_LSB)(uint16_t, uint8_t*);
 int(util_get_MSB)(uint16_t, uint8_t*);
