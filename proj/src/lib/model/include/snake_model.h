@@ -9,6 +9,10 @@
 #include "food.h"
 #include "position.h"
 
+enum disposition{DUP, DDOWN, DLEFT, DRIGHT};
+
+typedef enum disposition disposition_t;
+
 struct tail_piece;
 
 typedef struct tail_piece tail_piece_t;
@@ -62,6 +66,10 @@ void snake_set_position(snake_t* snake, position_t* position);
  * @return position of the snake object
  */
 position_t* snake_get_position(snake_t* snake);
+
+tail_piece_t* snake_get_next_tail(tail_piece_t* tail);
+
+disposition_t snake_get_tail_disposition(tail_piece_t* tail);
 
 // typedef struct {
 //     list snakeTail;

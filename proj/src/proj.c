@@ -2,7 +2,12 @@
 #include <lcom/proj.h>
 
 #include <stdio.h>
-// #include "controller.h"
+
+// #include "lib/state/include/state.h"
+// #include "lib/controller/include/board_controller.h"
+// #include "lib/controller/include/action.h"
+#include "lib/view/include/board_view.h"
+#include "drivers/kbd/include/kbd.h"
 
 /**
  * General app brief:
@@ -55,11 +60,11 @@ int main(int argc, char* argv[]) {
 
   // enables to log function invocations that are being "wrapped" by LCF
   // [comment this out if you don't want/need it]
-  lcf_trace_calls("/home/lcom/labs/lab5/trace.txt");
+  lcf_trace_calls("/home/lcom/labs/proj/trace.txt");
 
   // enables to save the output of printf function calls on a file
   // [comment this out if you don't want/need it]
-  lcf_log_output("/home/lcom/labs/lab5/output.txt");
+  lcf_log_output("/home/lcom/labs/proj/output.txt");
 
   // handles control over to LCF
   // [LCF handles command line arguments and invokes the right function]
@@ -75,7 +80,31 @@ int main(int argc, char* argv[]) {
 }
 
 int(proj_main_loop)(int argc, char *argv[]) {
-    printf("Welcome to SnakeTown\n");
+
+    vg_init(MODE_DIRECT_16);
+
+    board_t* board = board_new(50, 50);
+
+    if (board_draw_elements(board)) return 1;
+
+    // while (get_app_state() != SNULL) {
+
+    //   switch (get_app_state()) {
+    //     // GET USER ACTION FROM DRIVERS
+    //     case GAME:
+    //       // board_step(board, action);
+    //       break;
+    //     case MENU:
+    //       // TODO
+    //       break;
+    //   }
+    // }
+
+    sleep(3);
+    vg_exit();
+    
+    board_delete(board);
+
     return 0;
 
 }

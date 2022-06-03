@@ -1,7 +1,9 @@
 #ifndef _STATE_H_
-#define _STATE_H
+#define _STATE_H_
 
-enum app_state_t{MENU, GAME};
+enum app_state{MENU, GAME, SNULL};
+
+typedef enum app_state app_state_t;
 
 /**
  * @brief Interface to access different states
@@ -39,5 +41,13 @@ int set_app_state_menu();
  * @return int 0 upon success, 1 if app is already set to GAME
  */
 int set_app_state_game();
+
+
+/**
+ * @brief Set's the app's state to SNULL
+ * 
+ * @return int 0 upon success, 1 if app is already set to SNULL
+ */
+int set_app_state_null();
 
 #endif

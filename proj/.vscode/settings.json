@@ -7,5 +7,7 @@
   "editor.wordWrap": "bounded",
   "editor.wordWrapColumn": 100,
   "files.associations": {
+    "snake_model.h": "c",
+    "wall_model.h": "c"
   },
 }
