@@ -8,6 +8,9 @@
 // #include "lib/controller/include/action.h"
 #include "lib/view/include/board_view.h"
 #include "drivers/kbd/include/kbd.h"
+#include "drivers/timer/include/timer_macros.h"
+#include "utils/include/utils.h"
+#include "drivers/kbd/include/key_keyboard.h"
 
 /**
  * General app brief:
@@ -87,7 +90,52 @@ int(proj_main_loop)(int argc, char *argv[]) {
 
     if (board_draw_elements(board)) return 1;
 
-    // while (get_app_state() != SNULL) {
+    // Driver Receive Loop
+    uint8_t irq_set_kbd, irq_set_timer;
+    bool make;
+    size_t size;
+    int ipc_status, r;
+    message msg;
+
+    // Subscribe TIMER0 interrupts
+    if (timer_subscribe_int(&irq_set_timer)) return 1;
+    // Subscribe KBD interrupts
+    if (kbd_subscribe(&irq_set_kbd)) return 1;
+
+    while (scancode != ESC_BREAK) {
+        if ( (r = driver_receive(ANY, &msg, &ipc_status)) != 0 ) {
+            printf("driver_receive failed with: %d", r);
+            continue;
+        }
+        if (is_ipc_notify(ipc_status)) {
+            switch (_ENDPOINT_P(msg.m_source)) {
+                case HARDWARE:
+                    // Handles TIMER0 interrupts
+                    if (msg.m_notify.interrupts & BIT(irq_set_timer)) {
+                        timer_int_handler();
+                    }
+
+                    // Handles KBD interrupts
+                    if (msg.m_notify.interrupts & BIT(irq_set_kbd)) {
+                        kbc_ih();
+                        // To be implemented: Keyboard event -> In order to manage the scancodes
+                        // kbd_event();
+                    }
+            }
+        }
+    }
+
+    if (kbd_unsubscribe()) {
+        perror("ERROR: Something went wrong while unsubscribing Keyboard interrupts\n");
+
+    }
+
+    if (timer_unsubscribe_int()){
+        perror("ERROR: Something went wrong while unsubscribing timer interrupts\n");
+        return 1;
+    }
+
+        // while (get_app_state() != SNULL) {
 
     //   switch (get_app_state()) {
     //     // GET USER ACTION FROM DRIVERS

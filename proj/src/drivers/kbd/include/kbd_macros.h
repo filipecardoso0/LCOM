@@ -13,8 +13,6 @@
 
 /*Scancode Macros*/
 #define TWO_BYTES   0XE0    /*Signals the scancode is two bytes long*/
-#define ESC_BREAK_KEY     0x81    /*ESC_KEY breakcode*/
-#define BREAK       0x80    /*Break code check*/
 
 /*Command Macros*/
 #define R_CMDBYTE   0x20    /*Returns Command Byte*/
