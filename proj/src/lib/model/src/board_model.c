@@ -33,6 +33,12 @@ board_new(uint16_t width, uint16_t height)
     new_board->walls[wall_idx++] = wall_new(wall_pos2);
   }
 
+  //init fruit -> fruit will always spawn in a random place
+  position_t* randompos; 
+  randompos = position_new_randompos(width, height); 
+  fruit_t* fruit = fruit_new(randompos); 
+  new_board->fruit = fruit; 
+
   return new_board;
 }
 

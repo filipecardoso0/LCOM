@@ -14,6 +14,7 @@ void controller(key_press_t key){
                 case AR: snake_controller(RIGHT, 1); break;
                 case ESC: break;
                 case SPACE: break;
+                case ENTER: break; 
             }
         }
         case MENU: break;

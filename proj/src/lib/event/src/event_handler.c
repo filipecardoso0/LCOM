@@ -12,5 +12,20 @@ void kbd_handler(uint8_t* scancode){
     case AR_PRESSED: controller(AR); break;
     case ESC_PRESSED: controller(ESC); break;
     case SPACE_PRESSED: controller(SPACE); break;
-    default: printf("Error parsing scancode\n");
+    case ENTER_PRESSED: controller(ENTER); break; 
+    default: perror("Error parsing scancode\n");
+  }
+}
+
+void timer_handler(){
+}
+
+void mouse_handler(struct packet *mouse_packet){
+  if(mouse_packet->bytes[0] & RIGHT_PRESS) //needs controller implementation
+  else if(mouse_packet->bytes[0] & MID_PRESS) //needs controller implemantation
+  else if(mouse_packet->bytes[0] & LEFT_PRESS) //needs controller implemantation
+  else
+    perror("Error parsing mouse packet \n"); 
+
+  
 }

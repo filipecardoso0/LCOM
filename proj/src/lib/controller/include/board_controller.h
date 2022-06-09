@@ -3,4 +3,3 @@
 #include "snake_controller.h"
 
 void board_step(board_t* board, action_t action);
-

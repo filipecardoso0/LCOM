@@ -8,6 +8,32 @@
 int counter = 0; 
 int hook_id = 0; 
 
+int (timer_get_conf)(uint8_t timer, uint8_t *st) {
+  uint8_t control_word, timer_aux;
+
+  // Escrever a control word na variável control_word;  
+  
+  control_word = TIMER_RB_CMD | TIMER_RB_SEL(timer) | TIMER_RB_COUNT_; 
+
+
+  if(sys_outb(TIMER_CTRL, control_word)) return 1; 
+
+
+//Ler o status register do timer;
+  switch (timer) {
+    
+    case 0: timer_aux = TIMER_0; break;
+    case 1: timer_aux = TIMER_1; break;
+    case 2: timer_aux = TIMER_2; break;
+    default: return 1;
+
+  }
+  if (util_sys_inb(timer_aux, st)) return 1;
+
+  return 0;
+  
+}
+
 int (timer_set_frequency)(uint8_t timer, uint32_t freq) {
 
   uint8_t*  st = (uint8_t*) malloc(sizeof(uint8_t));

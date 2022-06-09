@@ -3,11 +3,13 @@
 
 #include "snake_model.h"
 #include "wall_model.h"
+#include "fruit_model.h"
 
 struct board {
   uint16_t width, height;
   snake_t* snake1, *snake2;
   wall_t** walls;
+  fruit_t* fruit; 
 };
 
 typedef struct board board_t;

@@ -11,6 +11,12 @@
     "wall_model.h": "c",
     "board_view.h": "c",
     "kbd.h": "c",
-    "timer_macros.h": "c"
+    "timer_macros.h": "c",
+    "key_keyboard.h": "c",
+    "event.h": "c",
+    "lcf.h": "c",
+    "position.h": "c",
+    "stdio.h": "c",
+    "mouse.h": "c"
   },
 }

@@ -3,6 +3,7 @@
 
 #include <lcom/lcf.h>
 
+
 struct position
 {
   uint16_t x, y;
@@ -20,6 +21,15 @@ typedef struct position position_t;
  */
 position_t* position_new(uint16_t x, uint16_t y);
 
+
+
+/**
+ * @brief Creates a new position object in memory @ random location
+ * 
+ * @return pointer to the newly created object
+ */
+position_t* position_new_randompos(uint16_t board_xsize, uint16_t board_ysize); 
+
 /**
  * @brief Creates a new position object in memory
  * 
@@ -34,7 +44,7 @@ position_t* position_new_from_position(position_t* position);
  * 
  * @param pos pointer to object that is to be deleted
  */
-void        position_delete     (position_t* pos);
+void  position_delete(position_t* pos);
 
 
 /**

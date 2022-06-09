@@ -13,6 +13,7 @@
 
 #define ESC_PRESSED 0x80
 #define SPACE_PRESSED 0X39
+#define ENTER_PRESSED 0X1C
 
 #define W_BREAK 0X91
 #define A_BREAK 0X9E
@@ -26,5 +27,7 @@
 
 #define ESC_BREAK 0X81
 #define SPACE_BREAK 0XB9
+#define ENTER_BREAK 0X9C
 
-#endif //PROJ_KEY_KEYBOARD_H
+#endif
+
