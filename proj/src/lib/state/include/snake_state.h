@@ -1,7 +1,9 @@
 #ifndef _SNAKE_STATE_H
 #define _SNAKE_STATE_H
 
-enum snake_state_t{NEW, MOVE, DEAD, INNACTIVE};
+enum snake_state{NEW, ALIVE, DEAD, INNACTIVE};
+
+typedef enum snake_state snake_state_t;
 
 typedef struct{
     snake_state_t p1_state = INNACTIVE;
@@ -25,7 +27,7 @@ player_state_t get_player_state();
  * @return int 1 if the argument is invalid, 2 if the state is already set,
  * 0 upon success
  */
-int set_snake_state_new(uint8_t player);
+int set_snake_state_new(snake_state_t snake);
 
 /**
  * @brief Sets the desired snake state to MOVE
@@ -34,7 +36,7 @@ int set_snake_state_new(uint8_t player);
  * @return int 1 if the argument is invalid, 2 if the state is already set,
  * 0 upon success
  */
-int set_snake__state_move(uint8_t player);
+int set_snake__state_alive(snake_state_t snake);
 
 /**
  * @brief Sets the desired snake state to DEAD
@@ -43,6 +45,6 @@ int set_snake__state_move(uint8_t player);
  * @return int 1 if the argument is invalid, 2 if the state is already set,
  * 0 upon success
  */
-int set_snake_state_dead(uint8_t player);
+int set_snake_state_dead(snake_state_t snake);
 
 #endif

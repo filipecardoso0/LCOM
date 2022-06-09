@@ -25,6 +25,9 @@ struct snake {
 
 typedef struct snake snake_t;
 
+snake_t p1;
+snake_t p2;
+
 /**
  * @brief Creates a snake object. Allocates memory internally
  * 

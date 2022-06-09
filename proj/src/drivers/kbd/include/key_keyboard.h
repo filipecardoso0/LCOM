@@ -24,7 +24,6 @@
 #define AL_BREAK 0XCB
 #define AR_BREAK 0XCD
 
-
 #define ESC_BREAK 0X81
 #define SPACE_BREAK 0XB9
 
