@@ -4,6 +4,7 @@
 #include <stdint.h>
 
 #include "../include/timer_macros.h"
+#include "../include/timer.h"
 
 int counter = 0; 
 int hook_id = 0; 

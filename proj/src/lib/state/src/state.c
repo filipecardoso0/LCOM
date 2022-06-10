@@ -1,5 +1,8 @@
 #include "../include/state.h"
 
+static app_state_t app_state;
+static action_t action = NOTHING;
+
 app_state_t 
 get_app_state()
 {
@@ -28,4 +31,26 @@ set_app_state_null()
   if (app_state == SNULL) return 1;
   app_state = SNULL;
   return 0;
+}
+
+void 
+state_step()
+{
+  switch (app_state) {
+    case GAME: game_state_step(action);
+    case MENU: break;
+    case SNULL: break;
+  }
+}
+
+void
+state_set_action(action_t act)
+{
+  action = act;
+}
+
+action_t
+state_get_action()
+{
+  return action;
 }

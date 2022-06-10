@@ -34,6 +34,7 @@ snake_new(position_t* position)
   new_snake->size = 1;
   new_snake->body_start = body_piece_new(position);
   new_snake->body_end = new_snake->body_start;
+  new_snake->head_direction = NORTH;
 
   return new_snake;
 }

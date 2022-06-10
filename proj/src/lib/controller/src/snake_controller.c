@@ -2,69 +2,39 @@
 
 #include "../include/snake_controller.h"
 
-// void snake_controller(action_t action, uint8_t player){
-//     switch(action){
-//         case UP:{
-//             if(!player){
-//                 if(snake_1_state == ALIVE) 
-//                 snake_move_up(p1);
-//                 break;
-//             }
-//             else if (snake_2_state == ALIVE){
-//                 snake_move_up(p2);
-//                 break;
-//             }
-//             break;
-//         }
-//         case DOWN:{
-//             if(!player){
-//                 if(snake_1_state == ALIVE) 
-//                 snake_move_down(p1);
-//                 break;
-//             }
-//             else if (snake_2_state == ALIVE){
-//                 snake_move_down(p2);
-//                 break;
-//             }
-//             break;
-//         }
-//         case LEFT:{
-//             if(!player){
-//                 if(snake_1_state == ALIVE) 
-//                 snake_move_left(p1);
-//                 break;
-//             }
-//             else if (snake_2_state == ALIVE){
-//                 snake_move_left(p2);
-//                 break;
-//             }
-//             break;
-//         }
-//         case RIGHT:{
-//             if(!player){
-//                 if(snake_1_state == ALIVE) 
-//                 snake_move_right(p1);
-//                 break;
-//             }
-//             else if (snake_2_state == ALIVE){
-//                 snake_move_right(p2);
-//                 break;
-//             }
-//             break;
-//         }
-//         default: printf("Invalid action\n");
-//     }
-// }
-
 void
 snake_step(snake_t* snake, action_t action)
 {
     switch (action) {
-        case UP: snake_move_up(snake); break;
-        case DOWN: snake_move_down(snake); break;
-        case LEFT: snake_move_left(snake); break;
-        case RIGHT: snake_move_right(snake); break;
+        case UP: 
+            if (snake->size == 1 || snake->head_direction != SOUTH)
+                snake->head_direction = NORTH;
+            break;
+        case DOWN: 
+            if (snake->size == 1 || snake->head_direction != NORTH)
+                snake->head_direction = SOUTH;
+            break;
+        case LEFT: 
+            if (snake->size == 1 || snake->head_direction != EAST)
+                snake->head_direction = WEST;
+            break;
+        case RIGHT: 
+            if (snake->size == 1 || snake->head_direction != WEST)
+                snake->head_direction = EAST;
+            break;
         default: break;
+    }
+    snake_move(snake);
+}
+
+void
+snake_move(snake_t* snake)
+{
+    switch (snake->head_direction) {
+        case NORTH: snake_move_up(snake); break;
+        case SOUTH: snake_move_down(snake); break;
+        case EAST: snake_move_right(snake); break;
+        case WEST: snake_move_left(snake); break;
     }
 }
 

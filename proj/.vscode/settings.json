@@ -17,6 +17,8 @@
     "lcf.h": "c",
     "position.h": "c",
     "stdio.h": "c",
-    "mouse.h": "c"
+    "mouse.h": "c",
+    "snake_controller.h": "c",
+    "board_model.h": "c"
   },
 }

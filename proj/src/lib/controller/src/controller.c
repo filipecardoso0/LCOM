@@ -1,20 +1,10 @@
 #include "../include/controller.h"
 
-void controller(key_press_t key){
+void controller(action_t action){
     switch(app_state){
         case GAME: {
-            switch(key){
-                case W: snake_controller(UP, 0); break;
-                case S: snake_controller(DOWN, 0); break;
-                case A: snake_controller(LEFT, 0); break;
-                case D: snake_controller(RIGHT, 0); break;
-                case AU: snake_controller(UP, 1); break;
-                case AD: snake_controller(DOWN, 1); break;
-                case AL: snake_controller(LEFT, 1); break;
-                case AR: snake_controller(RIGHT, 1); break;
-                case ESC: break;
-                case SPACE: break;
-                case ENTER: break; 
+            switch(action){
+                case UP: board_step();
             }
         }
         case MENU: break;

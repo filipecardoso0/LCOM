@@ -4,18 +4,13 @@
 
 #include <stdio.h>
 
-// #include "lib/state/include/state.h"
-#include "lib/controller/include/board_controller.h"
-// #include "lib/controller/include/action.h"
-#include "lib/view/include/board_view.h"
+#include "lib/state/include/state.h"
+#include "lib/event/include/event.h"
 #include "drivers/kbd/include/kbd.h"
-#include "drivers/timer/include/timer_macros.h"
-#include "utils/include/utils.h"
-#include "drivers/kbd/include/key_keyboard.h"
 #include "drivers/mouse/include/mouse.h"
-//#include "lib/event/include/event.h"
+#include "drivers/timer/include/timer.h"
 
-#define GAMEFPS 60 
+#define FPS 60 
 
 struct packet packet; 
 uint8_t scancode; 
@@ -47,13 +42,44 @@ int main(int argc, char* argv[]) {
 
 int(proj_main_loop)(int argc, char *argv[]) {
 
-    timer_set_frequency(0, GAMEFPS); 
+    // timer_set_frequency(0, GAMEFPS); 
 
     vg_init(MODE_DIRECT_16);
 
-    board_t* board = board_new(50, 50);
+    set_app_state_game();
 
-    if (board_first_draw(board)) return 1;
+    // loop stuff
+    uint8_t irq_set_kbd, irq_set_timer;
+    int ipc_status, r;
+    message msg;
+
+    // subscribe interrupts
+    if (timer_subscribe_int(&irq_set_timer)) return 1;
+    if (kbd_subscribe(&irq_set_kbd)) return 1;
+
+    while (get_app_state() != SNULL) {
+      if ( (r = driver_receive(ANY, &msg, &ipc_status)) != 0 ) { 
+        printf("driver_receive failed with: %d", r);
+        continue;
+      }
+      if (is_ipc_notify(ipc_status)) {
+        switch (_ENDPOINT_P(msg.m_source)) {
+          case HARDWARE:			
+            if (msg.m_notify.interrupts & BIT(irq_set_timer)) {
+              timer_int_handler();
+              timer_event();
+            }
+            if (msg.m_notify.interrupts & BIT(irq_set_kbd)) {
+              kbc_ih();
+              kbd_event(scancode);
+            }
+        }
+        if (counter == (int) sys_hz() / 4) {
+          counter = 0;
+          state_step();
+        }
+      }
+    }
 
     // uint8_t packets[3]; 
 
@@ -132,52 +158,22 @@ int(proj_main_loop)(int argc, char *argv[]) {
     //     }
     //         }
     //     }
-    // if (kbd_unsubscribe()) {
-    //   perror("ERROR: Something went wrong while unsubscribing Keyboard interrupts\n");
-    //   return 1;
-    // }
+    if (kbd_unsubscribe()) {
+      perror("ERROR: Something went wrong while unsubscribing Keyboard interrupts\n");
+      return 1;
+    }
 
-    // if (timer_unsubscribe_int()){
-    //   perror("ERROR: Something went wrong while unsubscribing timer interrupts\n");
-    //   return 1;
-    // }
+    if (timer_unsubscribe_int()){
+      perror("ERROR: Something went wrong while unsubscribing timer interrupts\n");
+      return 1;
+    }
     
     // if (mouse_unsubscribe_int()){
     //   perror("ERROR: Something went wrong while unsubscribing mouse interrupts\n");
     //   return 1;
     // }
 
-        // while (get_app_state() != SNULL) {
-
-    //   switch (get_app_state()) {
-    //     // GET USER ACTION FROM DRIVERS
-    //     case GAME:
-    //       // board_step(board, action);
-    //       break;
-    //     case MENU:
-    //       // TODO
-    //       break;
-    //   }
-    // }
-
-    sleep(3);
-
-    board_step(board, UP);
-    board_draw(board);
-    sleep(1);
-    board_step(board, UP);
-    board_draw(board);
-    sleep(1);
-    board_step(board, LEFT);
-    board_draw(board);
-    sleep(1);
-    board_step(board, LEFT);
-    board_draw(board);
-    sleep(1);
-
     vg_exit();
-    
-    board_delete(board);
 
     return 0;
 

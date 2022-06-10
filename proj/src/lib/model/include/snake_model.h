@@ -6,14 +6,17 @@
 
 #include "position.h"
 
-struct body_piece;
+enum direction {NORTH, SOUTH, EAST, WEST};
+typedef enum direction direction_t;
 
+struct body_piece;
 typedef struct body_piece body_piece_t;
 
 struct snake {
     uint16_t size;
     body_piece_t* body_start;
     body_piece_t* body_end;
+    direction_t head_direction;
 };
 
 typedef struct snake snake_t;

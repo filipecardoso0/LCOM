@@ -3,5 +3,5 @@
 
 extern app_state_t app_state;
 
-void controller(key_press_t key);
+void controller(action_t action);
 

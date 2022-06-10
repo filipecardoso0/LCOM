@@ -3,12 +3,15 @@
 
 #include "event_handler.h"
 
-enum event_type_t{KBD, MOUSE, TIMER};
+enum event_type{KBD, MOUSE, TIMER};
+typedef enum event_type event_type_t;
 
-typedef struct{
+struct event {
   event_type_t eventType;
   void* eventData;
-}event_t;
+};
+
+typedef struct event event_t;
 
 static event_t event;
 
@@ -28,13 +31,13 @@ void kbd_event(uint8_t scancode);
  * @brief Receives events from timer
  * Must add params
  */
-void kbd_event(uint8_t scancode);
+void timer_event();
 
 /**
  * @brief Receives events from mouse
  * Must add params
  */
-void mouse_event();
+void mouse_event(struct packet* mouse_packet);
 
 #endif
 

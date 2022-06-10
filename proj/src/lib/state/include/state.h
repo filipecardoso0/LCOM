@@ -1,6 +1,9 @@
 #ifndef _STATE_H_
 #define _STATE_H_
 
+#include "game_state.h"
+#include "action.h"
+
 enum app_state{MENU, GAME, SNULL};
 
 typedef enum app_state app_state_t;
@@ -19,7 +22,6 @@ typedef enum app_state app_state_t;
  *            includes less probable to occur
  */
 
-static app_state_t app_state;
 
 /**
  * @brief Returns the current state of the app
@@ -49,5 +51,11 @@ int set_app_state_game();
  * @return int 0 upon success, 1 if app is already set to SNULL
  */
 int set_app_state_null();
+
+void state_step();
+
+void state_set_action(action_t action);
+
+action_t state_get_action();
 
 #endif

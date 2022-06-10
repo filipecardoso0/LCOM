@@ -2,7 +2,7 @@
 #define PROJ_KEY_KEYBOARD_H
 
 #define W_PRESSED 0x1D
-#define A_PRESSED 0X1C
+#define A_PRESSED 0X1E
 #define S_PRESSED 0X1F
 #define D_PRESSED 0X20
 
@@ -11,7 +11,7 @@
 #define AL_PRESSED 0X4B
 #define AR_PRESSED 0x4D
 
-#define ESC_PRESSED 0x80
+#define ESC_PRESSED 0x01
 #define SPACE_PRESSED 0X39
 #define ENTER_PRESSED 0X1C
 
