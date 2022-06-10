@@ -84,3 +84,19 @@ board_get_walls(board_t* board)
 {
   return board->walls;
 }
+
+bool 
+board_is_empty(board_t* board, position_t* position)
+{
+  // verify vertical walls
+  if (position->x == 0 || position->x == board->width - 1)
+    return false;
+
+  // verify horizontal walls
+  if (position->y == 0 || position->y == board->height - 1)
+    return false;
+
+  // TODO: verify snakes
+
+  return true;
+}

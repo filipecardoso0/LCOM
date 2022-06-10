@@ -3,7 +3,7 @@
 #include "../include/snake_controller.h"
 
 void
-snake_step(snake_t* snake, action_t action)
+snake_step(snake_t* snake, board_t* board, action_t action)
 {
     switch (action) {
         case UP: 
@@ -24,40 +24,44 @@ snake_step(snake_t* snake, action_t action)
             break;
         default: break;
     }
-    snake_move(snake);
+    snake_move(snake, board);
 }
 
 void
-snake_move(snake_t* snake)
+snake_move(snake_t* snake, board_t* board)
 {
     switch (snake->head_direction) {
-        case NORTH: snake_move_up(snake); break;
-        case SOUTH: snake_move_down(snake); break;
-        case EAST: snake_move_right(snake); break;
-        case WEST: snake_move_left(snake); break;
+        case NORTH: snake_move_up(snake, board); break;
+        case SOUTH: snake_move_down(snake, board); break;
+        case EAST: snake_move_right(snake, board); break;
+        case WEST: snake_move_left(snake, board); break;
     }
 }
 
 void 
-snake_move_left(snake_t* snake)
+snake_move_left(snake_t* snake, board_t* board)
 {
-    snake_set_position(snake, position_get_left(snake_get_head_position(snake)));
+    if (board_is_empty(board, position_get_left(snake_get_head_position(snake))))
+        snake_set_position(snake, position_get_left(snake_get_head_position(snake)));
 }
 
 void
-snake_move_right(snake_t* snake)
+snake_move_right(snake_t* snake, board_t* board)
 {
-    snake_set_position(snake, position_get_right(snake_get_head_position(snake)));
+    if (board_is_empty(board, position_get_right(snake_get_head_position(snake))))
+        snake_set_position(snake, position_get_right(snake_get_head_position(snake)));
 }
 
 void 
-snake_move_up(snake_t* snake)
+snake_move_up(snake_t* snake, board_t* board)
 {
-    snake_set_position(snake, position_get_up(snake_get_head_position(snake)));
+    if (board_is_empty(board, position_get_up(snake_get_head_position(snake))))
+        snake_set_position(snake, position_get_up(snake_get_head_position(snake)));
 }
 
 void
-snake_move_down(snake_t* snake)
+snake_move_down(snake_t* snake, board_t* board)
 {
-    snake_set_position(snake, position_get_down(snake_get_head_position(snake)));
+    if (board_is_empty(board, position_get_down(snake_get_head_position(snake))))
+        snake_set_position(snake, position_get_down(snake_get_head_position(snake)));
 }

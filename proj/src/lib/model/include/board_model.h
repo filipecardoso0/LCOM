@@ -30,4 +30,6 @@ snake_t* board_get_snake(board_t* board, int n_snake);
 
 wall_t** board_get_walls(board_t* board);
 
+bool board_is_empty(board_t* board, position_t* position);
+
 #endif
