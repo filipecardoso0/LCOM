@@ -6,8 +6,8 @@ enum snake_state{NEW, ALIVE, DEAD, INNACTIVE};
 typedef enum snake_state snake_state_t;
 
 typedef struct{
-    snake_state_t p1_state = INNACTIVE;
-    snake_state_t p2_state = INNACTIVE;
+    snake_state_t p1_state;
+    snake_state_t p2_state;
 }player_state_t;
 
 static snake_state_t snake1_state = DEAD;

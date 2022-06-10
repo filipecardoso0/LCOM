@@ -5,7 +5,7 @@
 #include <stdio.h>
 
 // #include "lib/state/include/state.h"
-// #include "lib/controller/include/board_controller.h"
+#include "lib/controller/include/board_controller.h"
 // #include "lib/controller/include/action.h"
 #include "lib/view/include/board_view.h"
 #include "drivers/kbd/include/kbd.h"
@@ -161,6 +161,19 @@ int(proj_main_loop)(int argc, char *argv[]) {
     // }
 
     sleep(3);
+
+    board_step(board, UP);
+    board_draw_elements(board);
+    sleep(2);
+    board_step(board, UP);
+    board_draw_elements(board);
+    sleep(2);
+    board_step(board, UP);
+    board_draw_elements(board);
+    sleep(2);
+    board_step(board, UP);
+    board_draw_elements(board);
+    sleep(2);
 
     vg_exit();
     

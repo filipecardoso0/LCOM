@@ -7,9 +7,9 @@
 
 struct board {
   uint16_t width, height;
-  snake_t* snake1, *snake2;
+  snake_t* snake1, *snake2, *snake1_dbuffer, *snake2_dbuffer;
   wall_t** walls;
-  fruit_t* fruit; 
+  fruit_t* fruit;
 };
 
 typedef struct board board_t;

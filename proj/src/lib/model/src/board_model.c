@@ -39,6 +39,9 @@ board_new(uint16_t width, uint16_t height)
   fruit_t* fruit = fruit_new(randompos); 
   new_board->fruit = fruit; 
 
+  new_board->snake1_dbuffer = snake1;
+  new_board->snake2_dbuffer = snake2;
+
   return new_board;
 }
 

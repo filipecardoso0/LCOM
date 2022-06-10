@@ -55,28 +55,29 @@ snake_delete(snake_t* snake)
 void 
 snake_increase_size(snake_t* snake, position_t* position)
 {
-  body_piece_t* old_head = snake->body_start;
+  snake->size++;
   body_piece_t* new_head = body_piece_new(position);
-  old_head->prev_piece = new_head;
-  new_head->next_piece = old_head;
+  new_head->next_piece = snake->body_start;
+  snake->body_start->prev_piece = new_head;
+
   snake->body_start = new_head;
 }
 
 void 
 snake_set_position(snake_t* snake, position_t* position)
 {
-  body_piece_t* old_head = snake->body_start;
   body_piece_t* new_head = body_piece_new(position);
+  new_head->next_piece = snake->body_start;
+  snake->body_start->prev_piece = new_head;
 
-  // pop last piece
-  if (snake->body_end->prev_piece != NULL) {
-    snake->body_end->prev_piece->next_piece = NULL;
-  }
-  body_piece_delete(snake->body_end);
-
-  old_head->prev_piece = new_head;
-  new_head->next_piece = old_head;
   snake->body_start = new_head;
+
+  // pop back
+  snake->body_end->prev_piece->next_piece = NULL;
+  body_piece_t* new_end = snake->body_end->prev_piece;
+  body_piece_delete(snake->body_end);
+  snake->body_end = new_end;
+
 }
 
 position_t* 
@@ -94,5 +95,5 @@ snake_get_next_body_piece(body_piece_t* body_piece)
 position_t* 
 snake_get_body_piece_position(body_piece_t* body_piece)
 {
-  return body_piece->position;
+  return body_piece == NULL ? NULL : body_piece->position;
 }
