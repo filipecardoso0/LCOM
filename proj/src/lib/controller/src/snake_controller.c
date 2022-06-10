@@ -41,6 +41,13 @@ snake_move(snake_t* snake, board_t* board)
 void 
 snake_move_left(snake_t* snake, board_t* board)
 {
+    if (board->fruit->position->x == position_get_left(snake_get_head_position(snake))->x &&
+        board->fruit->position->y == position_get_left(snake_get_head_position(snake))->y) {
+        snake_increase_size(snake, position_get_left(snake_get_head_position(snake)));
+        return;
+    }
+
+
     if (board_is_empty(board, position_get_left(snake_get_head_position(snake))))
         snake_set_position(snake, position_get_left(snake_get_head_position(snake)));
 }
@@ -48,6 +55,13 @@ snake_move_left(snake_t* snake, board_t* board)
 void
 snake_move_right(snake_t* snake, board_t* board)
 {
+    if (board->fruit->position->x == position_get_right(snake_get_head_position(snake))->x &&
+        board->fruit->position->y == position_get_right(snake_get_head_position(snake))->y) {
+        snake_increase_size(snake, position_get_right(snake_get_head_position(snake)));
+        return;
+    }
+
+
     if (board_is_empty(board, position_get_right(snake_get_head_position(snake))))
         snake_set_position(snake, position_get_right(snake_get_head_position(snake)));
 }
@@ -55,6 +69,13 @@ snake_move_right(snake_t* snake, board_t* board)
 void 
 snake_move_up(snake_t* snake, board_t* board)
 {
+    if (board->fruit->position->x == position_get_up(snake_get_head_position(snake))->x &&
+        board->fruit->position->y == position_get_up(snake_get_head_position(snake))->y) {
+        snake_increase_size(snake, position_get_up(snake_get_head_position(snake)));
+        return;
+    }
+
+
     if (board_is_empty(board, position_get_up(snake_get_head_position(snake))))
         snake_set_position(snake, position_get_up(snake_get_head_position(snake)));
 }
@@ -62,6 +83,13 @@ snake_move_up(snake_t* snake, board_t* board)
 void
 snake_move_down(snake_t* snake, board_t* board)
 {
+    if (board->fruit->position->x == position_get_down(snake_get_head_position(snake))->x &&
+        board->fruit->position->y == position_get_down(snake_get_head_position(snake))->y) {
+        snake_increase_size(snake, position_get_down(snake_get_head_position(snake)));
+        return;
+    }
+
+
     if (board_is_empty(board, position_get_down(snake_get_head_position(snake))))
         snake_set_position(snake, position_get_down(snake_get_head_position(snake)));
 }
