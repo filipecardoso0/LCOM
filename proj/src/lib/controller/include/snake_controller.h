@@ -1,4 +1,4 @@
-#include "../../state/snake_state.h"
+#include "../../state/include/snake_state.h"
 #include "action.h"
 
 extern snake_state_t snake_1_state;

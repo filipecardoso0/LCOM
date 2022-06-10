@@ -20,9 +20,9 @@ position_new_randompos(uint16_t board_xsize, uint16_t board_ysize)
   time_t t1; 
   srand((unsigned) time(&t1)); 
 
-  //Generates a number from 0 to boardsize-1(to avoid generating the element out of bounds)
-  uint16_t x_val = rand()%board_xsize-2; //-2 , because board_xsize-1 = wallsize
-  uint16_t y_val = rand()%board_ysize-2;
+  //Generates a number from 1 to boardsize-1(to avoid generating the element out of bounds)
+  uint16_t x_val = rand() % (board_xsize - 2) + 1; 
+  uint16_t y_val = rand() % (board_ysize - 2) + 1;
 
   return position_new(x_val, y_val); 
 }

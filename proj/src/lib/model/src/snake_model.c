@@ -1,9 +1,29 @@
 #include "../include/snake_model.h"
 
-struct tail_piece {
-    tail_piece_t* next_piece;
-    disposition_t dispos;
+struct body_piece {
+    body_piece_t* next_piece;
+    body_piece_t* prev_piece;
+    position_t* position;
 };
+
+body_piece_t*
+body_piece_new(position_t* position)
+{
+  body_piece_t* new_body_piece = (body_piece_t*)malloc(sizeof(body_piece_t));
+  if (new_body_piece == NULL) return NULL;
+
+  new_body_piece->position = position;
+  new_body_piece->next_piece = NULL;
+  new_body_piece->prev_piece = NULL;
+
+  return new_body_piece;
+}
+
+void
+body_piece_delete(body_piece_t* body_piece) 
+{
+  free(body_piece);
+}
 
 snake_t* 
 snake_new(position_t* position)
@@ -12,8 +32,8 @@ snake_new(position_t* position)
   if (new_snake == NULL) return NULL;
 
   new_snake->size = 1;
-  new_snake->head_pos = position;
-  new_snake->tail = NULL;
+  new_snake->body_start = body_piece_new(position);
+  new_snake->body_end = new_snake->body_start;
 
   return new_snake;
 }
@@ -21,44 +41,58 @@ snake_new(position_t* position)
 void
 snake_delete(snake_t* snake)
 {
+  body_piece_t* next = snake->body_start;
+  while (next != NULL) {
+    body_piece_t* tmp = next;
+    body_piece_delete(next);
+    next = tmp->next_piece;
+  }
+
+  body_piece_delete(snake->body_end);
   free(snake);
 }
 
 void 
-snake_increase_size(snake_t* snake)
+snake_increase_size(snake_t* snake, position_t* position)
 {
-  snake->size++;
-  tail_piece_t* next = snake->tail;
-  while (next != NULL) {
-    next = snake_get_next_tail(next);
-  }
-  next = (tail_piece_t*)malloc(sizeof(tail_piece_t));
-  next->next_piece = NULL;
-
-  // JUST FOR TESTING
-  next->dispos = DDOWN;
+  body_piece_t* old_head = snake->body_start;
+  body_piece_t* new_head = body_piece_new(position);
+  old_head->prev_piece = new_head;
+  new_head->next_piece = old_head;
+  snake->body_start = new_head;
 }
 
 void 
 snake_set_position(snake_t* snake, position_t* position)
 {
-  snake->head_pos = position;
+  body_piece_t* old_head = snake->body_start;
+  body_piece_t* new_head = body_piece_new(position);
+
+  // pop last piece
+  if (snake->body_end->prev_piece != NULL) {
+    snake->body_end->prev_piece->next_piece = NULL;
+  }
+  body_piece_delete(snake->body_end);
+
+  old_head->prev_piece = new_head;
+  new_head->next_piece = old_head;
+  snake->body_start = new_head;
 }
 
 position_t* 
-snake_get_position(snake_t* snake)
+snake_get_head_position(snake_t* snake)
 {
-  return snake->head_pos;
+  return snake->body_start->position;
 }
 
-tail_piece_t* 
-snake_get_next_tail(tail_piece_t* tail)
+body_piece_t* 
+snake_get_next_body_piece(body_piece_t* body_piece)
 {
-  return tail->next_piece;
+  return body_piece->next_piece;
 }
 
-disposition_t 
-snake_get_tail_disposition(tail_piece_t* tail)
+position_t* 
+snake_get_body_piece_position(body_piece_t* body_piece)
 {
-  return tail->dispos;
+  return body_piece->position;
 }
