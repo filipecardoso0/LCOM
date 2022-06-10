@@ -6,6 +6,7 @@
 #include "snake_view.h"
 #include "fruit_view.h"
 
-int board_draw_elements(board_t* board);
+int board_first_draw(board_t* board);
+int board_draw(board_t* board);
 
 #endif

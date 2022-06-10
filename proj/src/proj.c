@@ -53,7 +53,7 @@ int(proj_main_loop)(int argc, char *argv[]) {
 
     board_t* board = board_new(50, 50);
 
-    if (board_draw_elements(board)) return 1;
+    if (board_first_draw(board)) return 1;
 
     // uint8_t packets[3]; 
 
@@ -163,17 +163,17 @@ int(proj_main_loop)(int argc, char *argv[]) {
     sleep(3);
 
     board_step(board, UP);
-    board_draw_elements(board);
-    sleep(2);
+    board_draw(board);
+    sleep(1);
     board_step(board, UP);
-    board_draw_elements(board);
-    sleep(2);
-    board_step(board, UP);
-    board_draw_elements(board);
-    sleep(2);
-    board_step(board, UP);
-    board_draw_elements(board);
-    sleep(2);
+    board_draw(board);
+    sleep(1);
+    board_step(board, LEFT);
+    board_draw(board);
+    sleep(1);
+    board_step(board, LEFT);
+    board_draw(board);
+    sleep(1);
 
     vg_exit();
     

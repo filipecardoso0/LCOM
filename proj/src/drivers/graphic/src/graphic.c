@@ -79,7 +79,11 @@ int
             color = (red << red_position) | (green << green_position) | (blue << blue_position);
         }
 
-      memcpy(init_address, &color, bytes_per_pixel);
+      uint32_t prev_color;
+      memcpy(&prev_color, init_address, bytes_per_pixel);
+
+      if (prev_color != color)
+        memcpy(init_address, &color, bytes_per_pixel);
       
       return 0;
     }
