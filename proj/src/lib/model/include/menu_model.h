@@ -7,10 +7,12 @@
 
 /* XPM IMAGES */
 #include "exitbutton.xpm"
+#include "snake.io.xpm"
+#include "start.xpm"
 
 struct menu {
   uint16_t width, height;
-  sprite_t* models; 
+  sprite_t* models[]; 
 };
 
 typedef struct menu menu_t;

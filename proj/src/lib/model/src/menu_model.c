@@ -10,8 +10,10 @@ menu_new(uint16_t width, uint16_t height)
   }
 
   new_menu->width = width; 
-  new_menu->height = height; 
-  new_menu->models = sprite_new((const char* const*)exitbutton_xpm, 5, 5); 
+  new_menu->height = height;
+  new_menu->models[0] = sprite_new((const char* const*)snake_io_xpm, 150,0);
+  new_menu->models[1] = sprite_new((const char* const*)start_xpm, 100, 400); 
+  new_menu->models[2] = sprite_new((const char* const*)exitbutton_xpm, 500, 400); 
 
   return new_menu;
 }

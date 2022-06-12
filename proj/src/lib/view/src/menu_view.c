@@ -15,8 +15,8 @@ menu_draw(menu_t* menu)
 {
   //TO BE IMPLEMENTED
   //menu_empty_screen(menu); 
-
-  sprite_draw(menu->models);
+  for (int i = 0; i < 3; i++)
+    sprite_draw(menu->models[i]);
 
   return 0; 
 }
