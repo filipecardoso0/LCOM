@@ -71,19 +71,7 @@ int
     if (x < h_res && y < v_res) {
       char* init_address = (char*)video_mem + (y * h_res + x) * bytes_per_pixel;
 
-        if (video_mode != MODE_INDEXED) {
-            uint32_t red, green, blue;
-            red = (color >> 16) & (BIT(red_mask) - 1);
-            green = (color >> 8) & (BIT(green_mask) - 1);
-            blue = (color) & (BIT(blue_mask) - 1);
-            color = (red << red_position) | (green << green_position) | (blue << blue_position);
-        }
-
-      uint32_t prev_color;
-      memcpy(&prev_color, init_address, bytes_per_pixel);
-
-      if (prev_color != color)
-        memcpy(init_address, &color, bytes_per_pixel);
+      memcpy(init_address, &color, bytes_per_pixel);
       
       return 0;
     }

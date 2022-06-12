@@ -38,7 +38,7 @@ state_step()
 {
   switch (app_state) {
     case GAME: game_state_step(action);
-    case MENU: break;
+    case MENU: menu_state_step(action);
     case SNULL: break;
   }
 }

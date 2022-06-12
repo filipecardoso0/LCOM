@@ -42,7 +42,7 @@ int main(int argc, char* argv[]) {
 
 int(proj_main_loop)(int argc, char *argv[]) {
 
-    // timer_set_frequency(0, GAMEFPS); 
+    //timer_set_frequency(0, FPS); 
 
     vg_init(MODE_DIRECT_16);
 

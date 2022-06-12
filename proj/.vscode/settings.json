@@ -19,6 +19,21 @@
     "stdio.h": "c",
     "mouse.h": "c",
     "snake_controller.h": "c",
-    "board_model.h": "c"
+    "board_model.h": "c",
+    "fruit_view.h": "c",
+    "board_controller.h": "c",
+    "menu_state.h": "c",
+    "menu_model.h": "c",
+    "action.h": "c",
+    "game_state.h": "c",
+    "controller.h": "c",
+    "state.h": "c",
+    "menu_controller.h": "c",
+    "menu_view.h": "c",
+    "*.xpm": "c",
+    "snake_state.h": "c",
+    "fruit_controller.h": "c",
+    "frui_controller.h": "c",
+    "fruit_model.h": "c"
   },
 }

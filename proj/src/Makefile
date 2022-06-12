@@ -13,8 +13,8 @@ PROG=proj
 .PATH: ${.CURDIR}/utils/src
 
 # source code files to be compiled
-SRCS = proj.c graphic.c kbd.c mouse.c timer.c snake_model.c position.c xpm.c utils.c board_model.c wall_model.c fruit_model.c board_view.c snake_view.c wall_view.c fruit_view.c snake_controller.c board_controller.c state.c game_state.c event.c event_handler.c
-IPATHS = -I./drivers/graphic/include -I./drivers/kbd/include -I./drivers/mouse/include -I./drivers/timer/include -I./lib/model/src -I./drivers/utils/src -I./lib/view/src -I.lib/controller/src -I.lib/state/src -I.lib/event/src
+SRCS = proj.c graphic.c kbd.c mouse.c timer.c snake_model.c position.c xpm.c utils.c menu_model.c board_model.c wall_model.c fruit_model.c menu_view.c board_view.c snake_view.c wall_view.c fruit_view.c fruit_controller.c snake_controller.c menu_controller.c board_controller.c state.c menu_state.c game_state.c event.c event_handler.c
+IPATHS = -I./drivers/graphic/include -I./drivers/kbd/include -I./drivers/mouse/include -I./drivers/timer/include -I./lib/model/src -I./drivers/utils/src -I./lib/view/src -I.lib/controller/src -I.lib/state/src -I.lib/event/src -I./images
 
 # additional compilation flags
 # "-Wall -Wextra -Werror -I . -std=c11 -Wno-unused-parameter" are already set

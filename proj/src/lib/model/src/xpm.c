@@ -6,7 +6,7 @@ xpm_new(xpm_map_t xpm, uint16_t x, uint16_t y)
     xpm_t* new_xpm = (xpm_t*)malloc(sizeof(xpm_t));
     if (new_xpm == NULL) return NULL;
 
-    enum xpm_image_type image_type = XPM_INDEXED;
+    enum xpm_image_type image_type = XPM_8_8_8_8;
     xpm_image_t img;
     new_xpm->map = xpm_load(xpm, image_type, &img);
 

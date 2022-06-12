@@ -14,8 +14,8 @@ typedef struct body_piece body_piece_t;
 
 struct snake {
     uint16_t size;
-    body_piece_t* body_start;
-    body_piece_t* body_end;
+    body_piece_t* body_start; /* Snake Tail */
+    body_piece_t* body_end; /* Snake Head */
     direction_t head_direction;
 };
 
@@ -44,6 +44,14 @@ void snake_delete(snake_t* snake);
  * @param position position where the snake will increase to
  */
 void snake_increase_size(snake_t* snake, position_t* position);
+
+/**
+ * @brief Decreases the size of a snake
+ * 
+ * @param snake snake whose size is to be decreased
+ * @return 1 if snake has reached it's minimum size, 0 uppon success
+ */
+int snake_decrease_size(snake_t* snake);
 
 
 /**
