@@ -45,13 +45,13 @@ void snake_delete(snake_t* snake);
  */
 void snake_increase_size(snake_t* snake, position_t* position);
 
-/**
- * @brief Decreases the size of a snake
- * 
- * @param snake snake whose size is to be decreased
- * @return 1 if snake has reached it's minimum size, 0 uppon success
- */
-int snake_decrease_size(snake_t* snake);
+// /**
+//  * @brief Decreases the size of a snake
+//  * 
+//  * @param snake snake whose size is to be decreased
+//  * @return 1 if snake has reached it's minimum size, 0 uppon success
+//  */
+// int snake_decrease_size(snake_t* snake);
 
 
 /**
@@ -75,8 +75,20 @@ void snake_set_position(snake_t* snake, position_t* position);
  */
 position_t* snake_get_head_position(snake_t* snake);
 
+/**
+ * @brief Returns the next snake's next part of the body.
+ * 
+ * @param body_piece Points to the previous part.
+ * @return body_piece_t* Points to the next part of the body.
+ */
 body_piece_t* snake_get_next_body_piece(body_piece_t* body_piece);
 
+/**
+ * @brief Returns the specified body piece's position.
+ * 
+ * @param body_piece Body piece that will retrieve its position.
+ * @return position_t* Points to the body piece's position.
+ */
 position_t* snake_get_body_piece_position(body_piece_t* body_piece);
 
 #endif

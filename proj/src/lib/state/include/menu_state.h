@@ -5,6 +5,12 @@
 #include "../../view/include/menu_view.h"
 #include "state.h"
 
+
+/**
+ * @brief Changes the menu state according the action's state.
+ * 
+ * @param action action_t that contains the state of the action.
+ */
 void menu_state_step(action_t action);
 
 #endif 

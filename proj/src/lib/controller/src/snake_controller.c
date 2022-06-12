@@ -1,6 +1,7 @@
 #include <lcom/lcf.h>
 
 #include "../include/snake_controller.h"
+#include "../../state/include/state.h"
 
 void
 snake_step(snake_t* snake, board_t* board, action_t action)
@@ -47,20 +48,10 @@ snake_move_left(snake_t* snake, board_t* board)
         return;
     }
 
-
     if (board_is_empty(board, position_get_left(snake_get_head_position(snake))))
         snake_set_position(snake, position_get_left(snake_get_head_position(snake)));
-    else{
-        //Two Manners of Game Over Happening
-        if(snake->body_end == snake->body_start){
-            //Maybe add Game Over Screen???
-            printf("Game Over"); 
-            //set_snake_state_dead()
-        }
-        if(snake_decrease_size(snake)){
-            printf("Game Over"); 
-            //set_snake_state_dead()
-        }
+    else {
+        set_app_state_null();
     }
 }
 
@@ -73,20 +64,10 @@ snake_move_right(snake_t* snake, board_t* board)
         return;
     }
 
-
     if (board_is_empty(board, position_get_right(snake_get_head_position(snake))))
         snake_set_position(snake, position_get_right(snake_get_head_position(snake)));
-    else{
-        //Two Manners of Game Over Happening
-        if(snake->body_end == snake->body_start){
-            //Maybe add Game Over Screen???
-            printf("Game Over"); 
-            //set_snake_state_dead()
-        }
-        if(snake_decrease_size(snake)){
-            printf("Game Over"); 
-            //set_snake_state_dead()
-        }
+    else {
+        set_app_state_null();
     }
 }
 
@@ -99,20 +80,10 @@ snake_move_up(snake_t* snake, board_t* board)
         return;
     }
 
-
     if (board_is_empty(board, position_get_up(snake_get_head_position(snake))))
         snake_set_position(snake, position_get_up(snake_get_head_position(snake)));
-    else{
-        //Two Manners of Game Over Happening
-        if(snake->body_end == snake->body_start){
-            //Maybe add Game Over Screen???
-            printf("Game Over"); 
-            //set_snake_state_dead()
-        }
-        if(snake_decrease_size(snake)){
-            printf("Game Over"); 
-            //set_snake_state_dead()
-        }
+    else {
+        set_app_state_null();
     }
 }
 
@@ -125,19 +96,9 @@ snake_move_down(snake_t* snake, board_t* board)
         return;
     }
 
-
     if (board_is_empty(board, position_get_down(snake_get_head_position(snake))))
         snake_set_position(snake, position_get_down(snake_get_head_position(snake)));
-    else{
-        //Two Manners of Game Over Happening
-        if(snake->body_end == snake->body_start){
-            //Maybe add Game Over Screen???
-            printf("Game Over"); 
-            //set_snake_state_dead()
-        }
-        if(snake_decrease_size(snake)){
-            printf("Game Over"); 
-            //set_snake_state_dead()
-        }
+    else {
+        set_app_state_null();
     }
 }

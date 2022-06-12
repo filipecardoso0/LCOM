@@ -70,6 +70,11 @@
 //  */
 // int set_foo_state_eaten();
 
+/**
+ * @brief Changes the game state according to the action made by the user.
+ * 
+ * @param action input action: it can be whether is uses an valid game key, selects an option or when he/she wants to exit or does nothing.
+ */
 void game_state_step(action_t action);
 
 #endif 

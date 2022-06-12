@@ -53,10 +53,23 @@ int set_app_state_game();
  */
 int set_app_state_null();
 
+/**
+ * @brief Updates the game state or the menu according to the app's state.
+ * 
+ */
 void state_step();
-
+/**
+ * @brief Set's the action's state to the input value.
+ * 
+ * @param action action_t that contains the new state of the action.
+ */
 void state_set_action(action_t action);
 
+/**
+ * @brief Returns the state of an action.
+ * 
+ * @return action_t the action's state.
+ */
 action_t state_get_action();
 
 #endif

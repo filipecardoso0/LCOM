@@ -97,6 +97,14 @@ board_is_empty(board_t* board, position_t* position)
     return false;
 
   // TODO: verify snakes
+  body_piece_t* next = board->snake1->body_start;
+  if (snake_get_next_body_piece(next) != NULL)
+    next = snake_get_next_body_piece(next);
+  while (next != NULL) {
+    if (position->x == snake_get_body_piece_position(next)->x && position->y == snake_get_body_piece_position(next)->y)
+      return false;
+      next = snake_get_next_body_piece(next);
+  }
 
   return true;
 }
