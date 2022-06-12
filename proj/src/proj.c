@@ -44,9 +44,9 @@ int(proj_main_loop)(int argc, char *argv[]) {
 
     //timer_set_frequency(0, FPS); 
 
-    vg_init(MODE_DIRECT_16);
+    vg_init(MODE_DIRECT_24);
 
-    set_app_state_game();
+    set_app_state_menu();
 
     // loop stuff
     uint8_t irq_set_kbd, irq_set_timer;

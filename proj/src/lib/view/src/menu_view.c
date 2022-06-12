@@ -16,7 +16,7 @@ menu_draw(menu_t* menu)
   //TO BE IMPLEMENTED
   //menu_empty_screen(menu); 
 
-  //if(xpm_draw(menu->models)) return 1; 
+  sprite_draw(menu->models);
 
   return 0; 
 }

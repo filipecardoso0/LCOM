@@ -2,13 +2,15 @@
 #define MENU_MODEL_H
 
 #include "xpm.h"
+#include "../include/sprite.h"
+
 
 /* XPM IMAGES */
-#include "test.xpm"
+#include "exitbutton.xpm"
 
 struct menu {
   uint16_t width, height;
-  xpm_t* models;
+  sprite_t* models; 
 };
 
 typedef struct menu menu_t;
@@ -20,7 +22,5 @@ void menu_delete(menu_t* menu);
 uint16_t menu_get_width(menu_t* menu);
 
 uint16_t menu_get_height(menu_t* menu);
-
-xpm_t* menu_get_models(menu_t* menu);
 
 #endif

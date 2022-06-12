@@ -14,6 +14,7 @@ static uint8_t green_position;
 static uint8_t blue_position;
 
 static uint16_t video_mode;
+static vbe_mode_info_t mode_info;
 
 void *
 (vg_init)(uint16_t mode) 
@@ -26,7 +27,6 @@ void *
 
     if (OK != (r = sys_privctl(SELF, SYS_PRIV_ADD_MEM, &mr)))
         panic("sys_privctl (ADD_MEM) failed: %d\n", r);
-    vbe_mode_info_t mode_info;
     vbe_get_mode_info(mode, &mode_info);
     h_res = mode_info.XResolution;
     v_res = mode_info.YResolution;
@@ -71,12 +71,25 @@ int
     if (x < h_res && y < v_res) {
       char* init_address = (char*)video_mem + (y * h_res + x) * bytes_per_pixel;
 
-      memcpy(init_address, &color, bytes_per_pixel);
+        if (video_mode != MODE_INDEXED) {
+            uint32_t red, green, blue;
+            red = (color >> 16) & (BIT(red_mask) - 1);
+            green = (color >> 8) & (BIT(green_mask) - 1);
+            blue = (color) & (BIT(blue_mask) - 1);
+            color = (red << red_position) | (green << green_position) | (blue << blue_position);
+        }
+
+      uint32_t prev_color;
+      memcpy(&prev_color, init_address, bytes_per_pixel);
+
+      if (prev_color != color)
+        memcpy(init_address, &color, bytes_per_pixel);
       
       return 0;
     }
     return 1;
 }
+
 
 int
 (vg_draw_hline)(uint16_t x, uint16_t y, uint16_t len, uint32_t color) 
@@ -104,3 +117,19 @@ paint_screen(uint32_t color)
     }
     return 0;
 }
+
+int
+(vg_xpm_img_draw)(xpm_image_t* image, uint16_t x, uint16_t y)
+{
+    for (uint16_t i = 0; i < image->width; i++) {
+        for (uint16_t j = 0; j < image->height; j++) {
+            uint32_t pixelcolor = 0; 
+            memcpy(&pixelcolor, image->bytes+(i + j * image->width)*bytes_per_pixel, bytes_per_pixel);
+            if (vg_draw_pixel(x + i, y + j, pixelcolor)) return 1;
+        }
+    }
+    return 0;
+
+}
+
+
