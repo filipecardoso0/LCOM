@@ -7,7 +7,8 @@ void controller(action_t action){
                 case UP: board_step();
             }
         }
-        case MENU: break;
+        case MENU: 
+            break;
         case SNULL: break;
     }
 }

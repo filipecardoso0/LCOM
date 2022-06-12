@@ -11,6 +11,11 @@ fruit_new(position_t* position)
   return new_fruit;
 }
 
+void
+fruit_update_pos(fruit_t* fruit, int width, int height){
+  fruit->position = position_new_randompos(width, height); 
+}
+
 void 
 fruit_delete(fruit_t* fruit)
 {

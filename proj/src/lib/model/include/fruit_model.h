@@ -9,6 +9,8 @@ typedef struct {
 
 fruit_t* fruit_new(position_t* position);
 
+void fruit_update_pos(fruit_t* fruit, int width, int height); 
+
 void fruit_delete(fruit_t* fruit);
 
 void fruit_set_position(fruit_t* fruit, position_t* position);

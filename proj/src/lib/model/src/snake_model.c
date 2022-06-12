@@ -64,6 +64,25 @@ snake_increase_size(snake_t* snake, position_t* position)
   snake->body_start = new_head;
 }
 
+int 
+snake_decrease_size(snake_t* snake)
+{
+  body_piece_t* new_snake_head = snake->body_start; 
+  new_snake_head = new_snake_head->next_piece; 
+  new_snake_head->prev_piece = NULL; 
+  //If snake tail = snake head , then reached "Spawn Size"
+  if(new_snake_head == snake->body_end){
+      printf("Tou aqui"); 
+      return 1; 
+  }
+  else{
+    body_piece_delete(snake->body_start); 
+    snake->body_start = new_snake_head;
+  }
+
+  return 0; 
+}
+
 void 
 snake_set_position(snake_t* snake, position_t* position)
 {

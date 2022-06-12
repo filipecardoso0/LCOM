@@ -58,13 +58,5 @@ uint16_t xpm_get_width(xpm_t* xpm);
 uint16_t xpm_get_height(xpm_t* xpm);
 
 
-/**
- * @brief Draws the xpm to the screen
- * 
- * @param xpm the xpm object to be drawn
- * 
- * @return 0 if no errors occurred, other values otherwise
- */
-int xpm_draw(xpm_t* xpm);
 
 #endif

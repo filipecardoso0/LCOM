@@ -2,6 +2,7 @@
 #define _STATE_H_
 
 #include "game_state.h"
+#include "menu_state.h"
 #include "action.h"
 
 enum app_state{MENU, GAME, SNULL};
