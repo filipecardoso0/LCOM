@@ -1,25 +1,16 @@
 #include "../include/menu_view.h"
 
-//Empties screen
-int
-menu_empty_screen(menu_t* menu)
-{
-  if(vg_draw_rectangle(0, 0, menu->width, menu->height, BLACK)) return 1; 
-
-  return 0; 
-}
-
-
 int 
 menu_draw(menu_t* menu)
 {
-  //TO BE IMPLEMENTED
-  //menu_empty_screen(menu); 
-  for (int i = 0; i < 3; i++)
-    sprite_draw(menu->models[i]);
+  
+  sprite_draw(menu->models[0]);
+
+  for (int i = 1; i <= menu->n_entries; i++)
+    if (menu_is_selected(menu, i))
+      sprite_draw(menu->selected_models[i]);
+    else
+      sprite_draw(menu->models[i]);
 
   return 0; 
 }
-
-
-

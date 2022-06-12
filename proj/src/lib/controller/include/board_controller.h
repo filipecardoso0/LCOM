@@ -5,6 +5,12 @@
 #include "snake_controller.h"
 #include "fruit_controller.h"
 
+/**
+ * @brief Updates the boards details according to the input action.
+ * 
+ * @param board Points to the board to be updated.
+ * @param action Input action.
+ */
 void board_step(board_t* board, action_t action);
 
 #endif

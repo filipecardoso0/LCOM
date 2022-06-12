@@ -8,10 +8,13 @@ fruit_update_pos(fruit_t* fruit, board_t* board)
   position_t* position = NULL;
   bool colision = true;
   while (colision) {
-    position_t* position = position_new_randompos(board->width, board->height);
     colision = false;
 
+    position = position_new_randompos(board->width, board->height);
+
     body_piece_t* next = board->snake1->body_start;
+    if (snake_get_next_body_piece(next) == NULL) break;
+    next = snake_get_next_body_piece(next);
     while (next != NULL) {
       if (position->x == snake_get_body_piece_position(next)->x && position->y == snake_get_body_piece_position(next)->y) {
         colision = true;

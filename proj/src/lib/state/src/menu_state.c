@@ -10,11 +10,11 @@ menu_state_step(action_t action)
     set_app_state_null();
   }
 
-  if(menu == NULL){
-    menu = menu_new(500, 500); 
-    menu_draw(menu); 
+  if (menu == NULL) {
+    menu = menu_new(500, 500);
   }
 
-  menu_step(menu, action); 
+  menu_step(menu, action);
+  state_set_action(NOTHING);
   menu_draw(menu); 
 }

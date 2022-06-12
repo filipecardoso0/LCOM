@@ -10,7 +10,7 @@
 #include "drivers/mouse/include/mouse.h"
 #include "drivers/timer/include/timer.h"
 
-#define FPS 10
+#define FPS 5
 
 uint8_t scancode; 
 
@@ -43,7 +43,7 @@ int(proj_main_loop)(int argc, char *argv[]) {
 
     vg_init(MODE_DIRECT_24);
 
-    set_app_state_game();
+    set_app_state_menu();
 
     // loop stuff
     uint8_t irq_set_kbd, irq_set_timer;

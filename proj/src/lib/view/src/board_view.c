@@ -8,9 +8,9 @@ board_clear(board_t* board)
             != snake_get_body_piece_position(board->snake1->body_end)->x ||
             snake_get_body_piece_position(board->snake1_dbuffer.body_end)->y
             != snake_get_body_piece_position(board->snake1->body_end)->y) {
-    if (vg_draw_rectangle(snake_get_body_piece_position(board->snake1_dbuffer.body_end)->x * 10,
-                          snake_get_body_piece_position(board->snake1_dbuffer.body_end)->y * 10,
-                          10, 10, BLACK
+    if (vg_draw_rectangle(snake_get_body_piece_position(board->snake1_dbuffer.body_end)->x * 20,
+                          snake_get_body_piece_position(board->snake1_dbuffer.body_end)->y * 20,
+                          20, 20, BLACK
     )) return 1;
   }
 
@@ -20,6 +20,7 @@ board_clear(board_t* board)
 int 
 board_first_draw(board_t* board)
 {
+  paint_screen(BLACK);
   for (int i = 0; i < 2 * (board->width + board->height - 2); i++) {
     if (wall_draw(board->walls[i])) return 1;
   }

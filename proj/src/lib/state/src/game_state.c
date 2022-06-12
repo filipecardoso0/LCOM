@@ -11,7 +11,7 @@ game_state_step(action_t action)
   }
 
   if (board == NULL) {
-    board = board_new(50, 50);
+    board = board_new(40, 30);
     board_first_draw(board);
   }
   
