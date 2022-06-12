@@ -12,7 +12,7 @@
  */
 struct board {
   uint16_t width, height;
-  snake_t* snake1, *snake2, snake1_dbuffer, snake2_dbuffer;
+  snake_t* snake1, /**snake2,*/ snake1_dbuffer/*, snake2_dbuffer*/;
   wall_t** walls;
   fruit_t* fruit;
 };
@@ -33,7 +33,7 @@ board_t* board_new(uint16_t width, uint16_t height);
  * 
  * @param board Points to the board to be removed.
  */
-void board_delete(board_t* board);
+void board_delete(board_t** board);
 
 /**
  * @brief Returns the board's width.
@@ -51,14 +51,14 @@ uint16_t board_get_width(board_t* board);
  */
 uint16_t board_get_height(board_t* board);
 
-/**
- * @brief Returns the snake according to its number.
- * 
- * @param board Points to the board that will retrieve the snake.
- * @param n_snake Snake's number.
- * @return snake_t* Points to the corresponding snake.
- */
-snake_t* board_get_snake(board_t* board, int n_snake);
+// /**
+//  * @brief Returns the snake according to its number.
+//  * 
+//  * @param board Points to the board that will retrieve the snake.
+//  * @param n_snake Snake's number.
+//  * @return snake_t* Points to the corresponding snake.
+//  */
+// snake_t* board_get_snake(board_t* board, int n_snake);
 
 /**
  * @brief Returns the board's walls.

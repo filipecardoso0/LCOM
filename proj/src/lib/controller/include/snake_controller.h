@@ -12,7 +12,7 @@
  * @param board Points to the board that contains the snake and will update the snake's details.
  * @param action Input action.
  */
-void snake_step(snake_t* snake, board_t* board, action_t action);
+int snake_step(snake_t* snake, board_t* board, action_t action);
 
 /**
  * @brief Moves a snake in the board.
@@ -20,7 +20,7 @@ void snake_step(snake_t* snake, board_t* board, action_t action);
  * @param snake Points to the snake to be moved.
  * @param board Points to the board that contains the snake and will update the snake's position. 
  */
-void snake_move(snake_t* snake, board_t* board);
+int snake_move(snake_t* snake, board_t* board);
 
 /**
  * @brief Moves a snake to the left in the board.
@@ -28,7 +28,7 @@ void snake_move(snake_t* snake, board_t* board);
  * @param snake Points to the snake to be moved.
  * @param board Points to the board that contains the snake and will update the snake's position. 
  */
-void snake_move_left(snake_t* snake, board_t* board);
+int snake_move_left(snake_t* snake, board_t* board);
 
 /**
  * @brief Moves a snake to the right in the board.
@@ -36,7 +36,7 @@ void snake_move_left(snake_t* snake, board_t* board);
  * @param snake Points to the snake to be moved.
  * @param board Points to the board that contains the snake and will update the snake's position. 
  */
-void snake_move_right(snake_t* snake, board_t* board);
+int snake_move_right(snake_t* snake, board_t* board);
 
 /**
  * @brief Moves a snake up in the board.
@@ -44,7 +44,7 @@ void snake_move_right(snake_t* snake, board_t* board);
  * @param snake Points to the snake to be moved.
  * @param board Points to the board that contains the snake and will update the snake's position. 
  */
-void snake_move_up(snake_t* snake, board_t* board);
+int snake_move_up(snake_t* snake, board_t* board);
 
 /**
  * @brief Moves a snake down in the board.
@@ -52,6 +52,6 @@ void snake_move_up(snake_t* snake, board_t* board);
  * @param snake Points to the snake to be moved.
  * @param board Points to the board that contains the snake and will update the snake's position. 
  */
-void snake_move_down(snake_t* snake, board_t* board);
+int snake_move_down(snake_t* snake, board_t* board);
 
 #endif

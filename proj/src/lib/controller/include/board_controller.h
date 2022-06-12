@@ -11,6 +11,6 @@
  * @param board Points to the board to be updated.
  * @param action Input action.
  */
-void board_step(board_t* board, action_t action);
+int board_step(board_t* board, action_t action);
 
 #endif

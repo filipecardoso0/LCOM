@@ -40,7 +40,7 @@ menu_t* menu_new(uint16_t width, uint16_t height);
  * 
  * @param menu Points to the menu to be deleted.
  */
-void menu_delete(menu_t* menu);
+void menu_delete(menu_t** menu);
 
 /**
  * @brief Returns the menu's width.

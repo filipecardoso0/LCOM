@@ -10,7 +10,7 @@
  * @param menu Points to the menu to be updated.
  * @param action Input action.
  */
-void menu_step(menu_t* menu, action_t action); 
+int menu_step(menu_t* menu, action_t action); 
 
 #endif
 

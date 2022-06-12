@@ -40,7 +40,7 @@ board_draw(board_t* board)
   if (snake_draw(board->snake1)) return 1;
 
   board->snake1_dbuffer = *(board->snake1);
-  board->snake2_dbuffer = *(board->snake2);
+  //board->snake2_dbuffer = *(board->snake2);
 
   return 0;
 }

@@ -24,10 +24,15 @@ menu_new(uint16_t width, uint16_t height)
 }
 
 void 
-menu_delete(menu_t* menu)
+menu_delete(menu_t** menu)
 {
-  // NEED TO FREE SPRITES
-  free(menu);
+  sprite_delete((*menu)->models[0]);
+  sprite_delete((*menu)->models[1]);
+  sprite_delete((*menu)->models[2]);
+  sprite_delete((*menu)->selected_models[1]);
+  sprite_delete((*menu)->selected_models[2]);
+  free(*menu);
+  *menu = NULL;
 }
 
 uint16_t 

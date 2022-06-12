@@ -7,7 +7,10 @@ game_state_step(action_t action)
 {
 
   if (action == EXIT) {
-    set_app_state_null();
+    board_delete(&board);
+    set_app_state_menu();
+    state_set_action(NOTHING);
+    return;
   }
 
   if (board == NULL) {
@@ -15,6 +18,11 @@ game_state_step(action_t action)
     board_first_draw(board);
   }
   
-  board_step(board, action);
+  if (board_step(board, action)) {
+    board_delete(&board);
+    state_set_action(NOTHING);
+    set_app_state_menu();
+    return;
+  }
   board_draw(board);
 }

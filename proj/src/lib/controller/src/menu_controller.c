@@ -1,12 +1,20 @@
 #include "../include/menu_controller.h"
 
-void menu_step(menu_t* menu, action_t action) {
+int 
+menu_step(menu_t* menu, action_t action) 
+{
 
   switch(action) {
-    case EXIT: set_app_state_null(); break;
+    case EXIT: set_app_state_null(); return 1;
     case SELECT: 
-      if (menu_is_selected_exit(menu)) set_app_state_null();
-      else if (menu_is_selected_1p(menu)) set_app_state_game();
+      if (menu_is_selected_exit(menu)) { 
+        set_app_state_null();
+        return 1;
+      }
+      else if (menu_is_selected_1p(menu)) { 
+        set_app_state_game();
+        return 1;
+      }
       break;
     case LEFT:
       menu_prev_entry(menu);
@@ -16,4 +24,5 @@ void menu_step(menu_t* menu, action_t action) {
       break;
     default: break;
   }
+  return 0;
 }

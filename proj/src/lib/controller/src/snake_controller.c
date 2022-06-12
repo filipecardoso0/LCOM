@@ -3,7 +3,7 @@
 #include "../include/snake_controller.h"
 #include "../../state/include/state.h"
 
-void
+int
 snake_step(snake_t* snake, board_t* board, action_t action)
 {
     switch (action) {
@@ -25,80 +25,89 @@ snake_step(snake_t* snake, board_t* board, action_t action)
             break;
         default: break;
     }
-    snake_move(snake, board);
+    return snake_move(snake, board);
 }
 
-void
+int
 snake_move(snake_t* snake, board_t* board)
 {
     switch (snake->head_direction) {
-        case NORTH: snake_move_up(snake, board); break;
-        case SOUTH: snake_move_down(snake, board); break;
-        case EAST: snake_move_right(snake, board); break;
-        case WEST: snake_move_left(snake, board); break;
+        case NORTH: return snake_move_up(snake, board);
+        case SOUTH: return snake_move_down(snake, board);
+        case EAST: return snake_move_right(snake, board);
+        case WEST: return snake_move_left(snake, board);
     }
+    return 0;
 }
 
-void 
+int 
 snake_move_left(snake_t* snake, board_t* board)
 {
     if (board->fruit->position->x == position_get_left(snake_get_head_position(snake))->x &&
         board->fruit->position->y == position_get_left(snake_get_head_position(snake))->y) {
         snake_increase_size(snake, position_get_left(snake_get_head_position(snake)));
-        return;
+        return 0;
     }
 
     if (board_is_empty(board, position_get_left(snake_get_head_position(snake))))
         snake_set_position(snake, position_get_left(snake_get_head_position(snake)));
     else {
-        set_app_state_null();
+        set_app_state_menu();
+        return 1;
     }
+    return 0;
 }
 
-void
+int
 snake_move_right(snake_t* snake, board_t* board)
 {
     if (board->fruit->position->x == position_get_right(snake_get_head_position(snake))->x &&
         board->fruit->position->y == position_get_right(snake_get_head_position(snake))->y) {
         snake_increase_size(snake, position_get_right(snake_get_head_position(snake)));
-        return;
+        return 0;
     }
 
     if (board_is_empty(board, position_get_right(snake_get_head_position(snake))))
         snake_set_position(snake, position_get_right(snake_get_head_position(snake)));
     else {
-        set_app_state_null();
+        set_app_state_menu();
+        return 1;
     }
+    return 0;
 }
 
-void 
+int 
 snake_move_up(snake_t* snake, board_t* board)
 {
     if (board->fruit->position->x == position_get_up(snake_get_head_position(snake))->x &&
         board->fruit->position->y == position_get_up(snake_get_head_position(snake))->y) {
         snake_increase_size(snake, position_get_up(snake_get_head_position(snake)));
-        return;
+        return 0;
     }
 
     if (board_is_empty(board, position_get_up(snake_get_head_position(snake))))
         snake_set_position(snake, position_get_up(snake_get_head_position(snake)));
     else {
-        set_app_state_null();
+        set_app_state_menu();
+        return 1;
     }
+    return 0;
 }
 
-void
+int
 snake_move_down(snake_t* snake, board_t* board)
 {
     if (board->fruit->position->x == position_get_down(snake_get_head_position(snake))->x &&
         board->fruit->position->y == position_get_down(snake_get_head_position(snake))->y) {
         snake_increase_size(snake, position_get_down(snake_get_head_position(snake)));
-        return;
+        return 0;
     }
 
     if (board_is_empty(board, position_get_down(snake_get_head_position(snake))))
         snake_set_position(snake, position_get_down(snake_get_head_position(snake)));
     else {
-        set_app_state_null();
+        set_app_state_menu();
+        return 1;
     }
+    return 0;
 }
