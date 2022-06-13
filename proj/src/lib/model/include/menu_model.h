@@ -3,6 +3,7 @@
 
 #include "xpm.h"
 #include "../include/sprite.h"
+#include "../../../drivers/mouse/include/mouse.h"
 
 
 /* XPM IMAGES */
@@ -11,6 +12,7 @@
 #include "../../../images/snake.io.xpm"
 #include "../../../images/start.xpm"
 #include "../../../images/start_selected.xpm"
+#include "../../../images/mouse_cursor_update.xpm"
 
 /**
  * @brief Struct that represents the menu. It contains the width and height of the screen and its components as well.
@@ -22,6 +24,7 @@ struct menu {
   int n_entries;
   sprite_t* models[3];
   sprite_t* selected_models[3];
+  mouse_cursor_t* mouse_cursor, mouse_cursor_dbuffer; 
 };
 
 typedef struct menu menu_t;

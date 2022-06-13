@@ -1,38 +1,24 @@
-#include <lcom/lcf.h>
-#include <stdint.h>
-#include <stdio.h>
+#include "../include/mouse.h"
 
-#include "mouse.h"
- 
+static int hook_id = 12;
+static uint8_t packet[3];
 
-int hook_id;
-uint8_t packetbyte; 
-
-//Subscribes mouse interrupts in exclusive mode on IRQ PORT 12
-int (mouse_subscribe_int)(uint8_t *bit_no){
-
-  hook_id = MOUSE_IRQ; 
-  *bit_no = hook_id; 
-
-  if(sys_irqsetpolicy(MOUSE_IRQ, IRQ_ENABLE | IRQ_EXCLUSIVE, &hook_id) != OK) return 1; 
-
-  return 0; 
+int mouse_subscribe(uint8_t* bit_no) {
+  *bit_no = hook_id;
+  if (sys_irqsetpolicy(MOUSE_IRQ, IRQ_REENABLE | IRQ_EXCLUSIVE, &hook_id)) return 1;
+  return 0;
 }
 
-//Unsubscribes mouse interrupts
-int (mouse_unsubscribe_int)(void){
-
-  //Unsubscribes mouse interrupts
-  if(sys_irqrmpolicy(&hook_id) != OK) return 1; 
-
-  return 0; 
+int mouse_unsubscribe() {
+  if (sys_irqrmpolicy(&hook_id)) return 1;
+  return 0;
 }
 
 //Checks if its possible to write arguments to the Input Buffer 
 bool (mouse_check_IBF)(void){
     uint8_t status; 
 
-    if(util_sys_inb(STATUS_REG, &status)) return false; 
+    if(util_sys_inb(STATREG, &status)) return false; 
 
     //IBF BIT IS ACTIVE SO WE CANNOT WRITE TO IBF
     if(status & IBF)
@@ -40,6 +26,60 @@ bool (mouse_check_IBF)(void){
     //IBF BIT ISN'T ACTIVE SO WE CAN WRITE TO IT (PASS ARGUMENTS TO THE COMMANDS)
     else
       return true; 
+}
+
+static int byte_counter = 0;
+
+int get_byte_count() { return byte_counter; }
+
+void (mouse_ih)(void) {
+    uint8_t statuscode, byte;
+
+    if(byte_counter >= 3) byte_counter = 0;
+
+    if (util_sys_inb(STATREG, &statuscode)) return;
+
+    if (statuscode & (TIMEOUT | PAR_ERROR)) {
+        util_sys_inb(OBF, &byte);
+        return;
+    }
+
+    if (!(statuscode & AUX) || !(statuscode & OBF_FULL)) return;
+
+    if (util_sys_inb(OBF, &byte)) return;
+
+    if ((byte & FIRST_BYTE)  || byte_counter) {
+        packet[byte_counter++] = byte;
+    }
+}
+
+mouse_cursor_t*
+cursor_new()
+{
+  mouse_cursor_t* cursor = (mouse_cursor_t*) malloc(sizeof(mouse_cursor_t));
+  if(cursor == NULL) return NULL; 
+
+  cursor->x = 10; 
+  cursor->y = 10; 
+  cursor->cursorsprite = sprite_new((const char* const*)cursor_xpm, cursor->x, cursor->y);
+
+  return cursor;
+}
+
+struct packet mouse_get_packet() {
+  struct packet pp;
+  pp.bytes[0] = packet[0];
+  pp.bytes[1] = packet[1];
+  pp.bytes[2] = packet[2];
+  pp.rb = pp.bytes[0] & RMB;
+  pp.mb = pp.bytes[0] & MMB;
+  pp.lb = pp.bytes[0] & LMB;
+  pp.delta_x = pp.bytes[0] & X_SIGN ? (int16_t)(0xFF00 | pp.bytes[1]) : pp.bytes[1];
+  pp.delta_y = pp.bytes[0] & Y_SIGN ? (int16_t)(0xFF00 | pp.bytes[2]) : pp.bytes[2];
+  pp.x_ov = pp.bytes[0] & X_OVFL;
+  pp.y_ov = pp.bytes[0] & Y_OVFL;
+
+  return pp;
 }
 
 //Writes command to the IBF and returns success or failure and the ACK Byte by reference on variable response
@@ -77,7 +117,7 @@ int (mouse_enables_data_reporting)(void){
 
   while(seconderror < 2){
 
-    if(sys_outb(CONTROL_REG, WRITE_BYTE_TO_MOUSE)) return 1; 
+    if(sys_outb(CMDREG, WRITE_BYTE_TO_MOUSE)) return 1; 
 
     if(mouse_write_command(ENABLE_DATA_REPORTING, &response)) return 1; 
 
@@ -100,7 +140,7 @@ int (mouse_disable_data_reporting)(void){
   while(seconderror < 2){
     
     //Sends Write byte to mouse command to mouse's control register
-    if(sys_outb(CONTROL_REG, WRITE_BYTE_TO_MOUSE)) return 1; 
+    if(sys_outb(CMDREG, WRITE_BYTE_TO_MOUSE)) return 1; 
 
     //Writes command args to mouse
     mouse_write_command(DISABLE_DATA_REPORTING, &response); 
@@ -114,70 +154,3 @@ int (mouse_disable_data_reporting)(void){
 
   return 1;  
 }
-
-int (mouse_reset_to_default)(void){
-
-  //Disables data Reporting
-  if(mouse_disable_data_reporting()) return 1;
-
-  //Unsubscribes mouse interrupts 
-  if(mouse_unsubscribe_int()) return 1; 
-
-  return 0; 
-}
-
-int (mouse_check_OBF)(void){
-  
-  uint8_t status; 
-
-  //Reads status byte of mouse's OBF
-  if(util_sys_inb(STATUS_REG, &status)) return 1; 
-
-  if(status & OBF_FULL && status & AUX){
-    if(status & PARITY_ERROR || status & TIMEOUT_ERROR)
-      return 1; 
-    else 
-      return 0; 
-  }
-  else
-    return 1;   
-}
-
-//Interrupt handler reads the current byte from the OBF
-void(mouse_ih)(void){
-  //Pedro souto says we don't need to check obf or aux bit but I will check it eather way just to make it more correct
-
-  //If didn't occurr any error while checking OBF, then it is safe to read the byte out of the OBF
-  if(mouse_check_OBF()){
-    packetbyte = 0X00; 
-  }
-  else{
-    if(util_sys_inb(OBF, &packetbyte)){
-      packetbyte = 0X00; 
-    } 
-  }
-
-}
-
-void (mouse_parse_packet)(struct packet* packet){
-  packet->rb = packet->bytes[0] & RIGHT_PRESS; 
-  packet->mb = packet->bytes[0] & MID_PRESS; 
-  packet->lb = packet->bytes[0] & LEFT_PRESS; 
-
-  packet->x_ov = packet->bytes[0] & X_OVFL; 
-  packet->y_ov = packet->bytes[0] & Y_OVFL; 
-
-  if(packet->bytes[0] & X_SIGN){
-    packet->delta_x = packet->bytes[1] | 0XFF00; 
-  } 
-  else 
-    packet->delta_x = packet->bytes[1]; 
-
-  if(packet->bytes[0] & Y_SIGN){
-    packet->delta_y = packet->bytes[2] | 0XFF00; 
-  }
-  else 
-    packet->delta_y = packet->bytes[2]; 
-}
-
-

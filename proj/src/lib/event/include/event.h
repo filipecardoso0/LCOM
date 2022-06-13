@@ -9,6 +9,7 @@ typedef enum event_type event_type_t;
 struct event {
   event_type_t eventType;
   void* eventData;
+  struct packet* eventDataMouse;
 };
 
 typedef struct event event_t;

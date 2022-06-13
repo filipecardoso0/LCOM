@@ -5,6 +5,15 @@
         "xpm.h": "c",
         "sprite.h": "c",
         "graphic.h": "c",
-        "menu_model.h": "c"
+        "menu_model.h": "c",
+        "mouse.h": "c",
+        "event.h": "c",
+        "timer.h": "c",
+        "kbd.h": "c",
+        "state.h": "c",
+        "utils.h": "c",
+        "kbc_macros.h": "c",
+        "mouse_macros.h": "c",
+        "event_handler.h": "c"
     }
 }

@@ -132,4 +132,15 @@ int
 
 }
 
+unsigned
+get_hres()
+{
+    return h_res;
+}
+
+unsigned
+get_vres()
+{
+    return v_res;
+}
 

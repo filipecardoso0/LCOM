@@ -16,6 +16,9 @@ menu_new(uint16_t width, uint16_t height)
   new_menu->models[0] = sprite_new((const char* const*)snake_io_xpm, 150,0);
   new_menu->models[1] = sprite_new((const char* const*)start_xpm, 100, 400); 
   new_menu->models[2] = sprite_new((const char* const*)exitbutton_xpm, 500, 400);
+  new_menu->mouse_cursor = cursor_new();
+  new_menu->mouse_cursor_dbuffer = *(new_menu->mouse_cursor);
+  new_menu->mouse_cursor_dbuffer.cursorsprite = sprite_new((const char* const*) cursor_xpm_delete, new_menu->mouse_cursor_dbuffer.x, new_menu->mouse_cursor_dbuffer.y);
   
   new_menu->selected_models[1] = sprite_new((const char* const*)start_selected_xpm, 100, 400);
   new_menu->selected_models[2] = sprite_new((const char* const*)exit_button_selected_xpm, 500, 400);

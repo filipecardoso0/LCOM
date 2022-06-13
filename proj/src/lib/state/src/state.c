@@ -2,6 +2,7 @@
 
 static app_state_t app_state;
 static action_t action = NOTHING;
+static struct packet* pp = NULL;
 
 app_state_t 
 get_app_state()
@@ -53,4 +54,16 @@ action_t
 state_get_action()
 {
   return action;
+}
+
+void 
+state_set_packet(struct packet* packet)
+{
+  pp = packet;
+}
+
+struct packet*
+state_get_packet()
+{
+  return pp;
 }

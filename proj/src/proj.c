@@ -9,8 +9,9 @@
 #include "drivers/kbd/include/kbd.h"
 #include "drivers/mouse/include/mouse.h"
 #include "drivers/timer/include/timer.h"
+#include "drivers/mouse/include/mouse.h"
 
-#define FPS 5
+#define FPS 7
 
 uint8_t scancode; 
 
@@ -45,14 +46,19 @@ int(proj_main_loop)(int argc, char *argv[]) {
 
     set_app_state_menu();
 
+    // int speed = 12;
+
     // loop stuff
-    uint8_t irq_set_kbd, irq_set_timer;
+    uint8_t irq_set_kbd, irq_set_timer, irq_set_mouse;
     int ipc_status, r;
     message msg;
 
     // subscribe interrupts
     if (timer_subscribe_int(&irq_set_timer)) return 1;
     if (kbd_subscribe(&irq_set_kbd)) return 1;
+    if (mouse_subscribe(&irq_set_mouse)) return 1;
+
+    if (mouse_enable_data_reporting()) return 1;
 
     while (get_app_state() != SNULL) {
       if ( (r = driver_receive(ANY, &msg, &ipc_status)) != 0 ) { 
@@ -69,11 +75,19 @@ int(proj_main_loop)(int argc, char *argv[]) {
             if (msg.m_notify.interrupts & BIT(irq_set_kbd)) {
               kbc_ih();
               kbd_event(scancode);
+            }	
+            if (msg.m_notify.interrupts & BIT(irq_set_mouse)) { 
+              mouse_ih();
+              if (get_byte_count() >= 3) {
+                struct packet pp = mouse_get_packet();
+                mouse_event(&pp);
+              }
             }
+
         }
         if (counter == (int) sys_hz() / FPS) {
-          counter = 0;
           state_step();
+          counter = 0;
         }
       }
     }
@@ -88,10 +102,12 @@ int(proj_main_loop)(int argc, char *argv[]) {
       return 1;
     }
     
-    // if (mouse_unsubscribe_int()){
-    //   perror("ERROR: Something went wrong while unsubscribing mouse interrupts\n");
-    //   return 1;
-    // }
+    if (mouse_unsubscribe()){
+      perror("ERROR: Something went wrong while unsubscribing mouse interrupts\n");
+      return 1;
+    }
+
+    if (mouse_disable_data_reporting()) return 1;
 
     vg_exit();
 

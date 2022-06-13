@@ -4,7 +4,7 @@ void event_dispatcher(){
   switch(event.eventType){
     case KBD: kbd_handler(event.eventData); break;
     case TIMER: /*timer_handler();*/ break;
-    case MOUSE: mouse_handler(event.eventData); break;
+    case MOUSE: mouse_handler(event.eventDataMouse); break;
     default: break;
   }
 }
@@ -20,8 +20,8 @@ void timer_event(){
   event_dispatcher(); 
 }
 
-void mouse_event(struct packet* mouse_packet){
+void mouse_event(struct packet* mouse_packet) {
   event.eventType = MOUSE;
-  event.eventData = &mouse_packet; 
+  event.eventDataMouse = mouse_packet; 
   event_dispatcher();
 }

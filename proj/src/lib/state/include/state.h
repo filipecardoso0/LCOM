@@ -4,6 +4,7 @@
 #include "game_state.h"
 #include "menu_state.h"
 #include "action.h"
+#include "../../../drivers/mouse/include/mouse.h"
 
 enum app_state{MENU, GAME, SNULL};
 
@@ -71,5 +72,9 @@ void state_set_action(action_t action);
  * @return action_t the action's state.
  */
 action_t state_get_action();
+
+struct packet* state_get_packet();
+
+void state_set_packet(struct packet* packet);
 
 #endif
